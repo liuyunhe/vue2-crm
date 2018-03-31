@@ -11,7 +11,7 @@ export default {
 </script>
 
 <style lang="scss">
-
+//以下为全局属性
   body {
     margin: 0px;
     padding: 0px;
@@ -87,5 +87,49 @@ export default {
     background:rgba(245,247,250,1);
     color: #222222;
   }
+  .el-table{
+
+  }
+  //表格图标
+  i.table-icon{
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 10px;
+    vertical-align: middle;
+    cursor: pointer;
+    //预览
+    &.ly{
+    background-image: url("./assets/tableIcon/icon-yl.png");
+    }
+    //编辑
+    &.bj{
+      background-image: url("./assets/tableIcon/icon-bj.png");
+    }
+    //发布
+    &.fb{
+      background-image: url("./assets/tableIcon/icon-fb.png");
+    }
+    //复制链接
+    &.fzlj{
+      background-image: url("./assets/tableIcon/icon-fzlj.png");
+    }
+    //禁用
+    &.jy{
+      background-image: url("./assets/tableIcon/icon-jy.png");
+    }
+    //明细
+    &.mx{
+      background-image: url("./assets/tableIcon/icon-mx.png");
+    }
+    //删除
+    &.sc{
+      background-image: url("./assets/tableIcon/icon-sc.png");
+    }
+  }
+  //
+
+
+
 
 </style>
