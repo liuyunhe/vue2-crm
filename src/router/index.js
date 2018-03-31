@@ -4,7 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import Login from '../pages/Login.vue'
 import Home from '../pages/Home.vue'
 import NotFound from '../pages/404.vue'
-import Table from '../pages/Table.vue'
+import LandingPageSetting from '../pages/tfgl/LandingPageSetting.vue'
 
 Vue.use(Router)
 
@@ -17,13 +17,13 @@ export default new Router({
     },
     {
       path: '/',
-      name: 'Home',
+      name: '投放管理',
       component: Home,
       children:[
         {
-          path: '/table',
-          name: 'Table',
-          component: Table,
+          path: '/LandingPageSetting',
+          name: '落地页设置',
+          component: LandingPageSetting,
         }
       ]
     },
