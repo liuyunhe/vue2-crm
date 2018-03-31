@@ -88,6 +88,11 @@ export default {
     th{
       background-color:rgba(245,247,250,1)!important;
       color: #222222;
+      .cell{
+        span.el-table__column-filter-trigger{
+          margin-left: 10px;
+        }
+      }
     }
   }
   //表格图标
