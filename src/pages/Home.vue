@@ -12,7 +12,9 @@
           </el-dropdown-menu>
         </el-dropdown>
       </el-col>
-      <el-col :span="4"></el-col>
+      <el-col :span="4" class="logo-bar">
+        <span>全网导客平台</span>
+      </el-col>
       <el-col :span="16" class="menu">
         <el-menu
           :default-active="activeIndex2"
@@ -21,12 +23,14 @@
           @select="handleSelect"
           background-color="#202A3E"
           text-color="#fff"
-          active-text-color="#ffd04b"
+          active-text-color="#fff"
         >
-          <el-menu-item index="0">首页</el-menu-item>
-          <el-menu-item index="1">处理中心</el-menu-item>
+          <el-menu-item index="6">系统管理</el-menu-item>
+          <el-menu-item index="5">运营助手</el-menu-item>
+          <el-menu-item index="4">项目管理</el-menu-item>
+          <el-menu-item index="3">客户管理</el-menu-item>
           <el-submenu index="2">
-            <template slot="title">我的工作台</template>
+            <template slot="title">数据分析</template>
             <el-menu-item index="2-1">选项1</el-menu-item>
             <el-menu-item index="2-2">选项2</el-menu-item>
             <el-menu-item index="2-3">选项3</el-menu-item>
@@ -37,8 +41,8 @@
               <el-menu-item index="2-4-3">选项3</el-menu-item>
             </el-submenu>
           </el-submenu>
-          <el-menu-item index="3">消息中心</el-menu-item>
-          <el-menu-item index="4">订单管理</el-menu-item>
+          <el-menu-item index="1">投放管理</el-menu-item>
+          <el-menu-item index="0">首页</el-menu-item>
         </el-menu>
       </el-col>
     </el-col>
@@ -46,7 +50,6 @@
       <section class="content-container">
         <div class="grid-content bg-purple-light">
           <el-col :span="24" class="breadcrumb-container">
-            <strong class="title">{{$route.name}}</strong>
             <el-breadcrumb separator="/" class="breadcrumb-inner">
               <el-breadcrumb-item v-for="item in $route.matched" :key="item.path">
                 {{ item.name }}
@@ -66,9 +69,7 @@
 </template>
 
 <script>
-
     import ElCol from "element-ui/packages/col/src/col";
-
     export default {
       components: {ElCol},
       name: "",
@@ -132,11 +133,16 @@
     top: 0px;
     bottom: 0px;
     width: 100%;
+    min-width: 1100px;
     .header{
-
       border-bottom: solid 1px #e6e6e6;
-      background: $color-primary;
+      background: $color-top-menu;
       color:#fff;
+      .logo-bar{
+        line-height: 66px;
+        font-size: 20px;
+        font-weight: bolder;
+      }
       .menu {
         /*background: $color-primary;*/
         height: 66px;
@@ -145,6 +151,13 @@
         .el-menu{
           border: none;
           box-sizing: border-box;
+          .el-menu-item{
+            float: right;
+            padding: 0 20px;
+          }
+          .el-submenu{
+            float: right;
+          }
         }
       }
       .userinfo {
@@ -217,16 +230,16 @@
         // bottom: 0px;
         // left: 230px;
         overflow-y: scroll;
-        padding: 20px;
+        padding: 30px;
         .breadcrumb-container {
-          //margin-bottom: 15px;
+          margin-bottom: 15px;
           .title {
             width: 200px;
             float: left;
             color: #475669;
           }
           .breadcrumb-inner {
-            float: right;
+            float: left;
           }
         }
         .content-wrapper {
