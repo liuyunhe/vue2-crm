@@ -83,12 +83,12 @@ export default {
   .fade-leave-active {
     opacity: 0;
   }
-  .el-table th{
-    background:rgba(245,247,250,1);
-    color: #222222;
-  }
-  .el-table{
 
+  .el-table{
+    th{
+      background-color:rgba(245,247,250,1)!important;
+      color: #222222;
+    }
   }
   //表格图标
   i.table-icon{
