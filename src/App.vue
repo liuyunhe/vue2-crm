@@ -71,7 +71,7 @@ export default {
     }
   }
   .footer-toolbar {
-    margin: 25px 0px;
+    margin: 25px 0px 0px;
   }
 
   .fade-enter-active,
