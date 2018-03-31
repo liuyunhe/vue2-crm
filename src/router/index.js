@@ -9,6 +9,7 @@ import LandingPageSetting from '../pages/tfgl/LandingPageSetting.vue'
 Vue.use(Router)
 
 export default new Router({
+  base:'/vue2-crm/',
   routes: [
     {
       path: '/login',
