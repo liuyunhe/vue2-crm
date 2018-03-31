@@ -49,25 +49,25 @@
           this.$refs.ruleForm2.validate((valid)=>{
             if(valid){
               this.logining = true;
-              let loginParams = {username:this.ruleForm2.account,passWord:this.ruleForm2.checkPass}
-              sessionStorage.setItem('user', JSON.stringify(loginParams.username));
-              this.$router.push({path:'/'})
+              let loginParams = { username: this.ruleForm2.account, password: this.ruleForm2.checkPass };
               //调用接口
-//              this.$api.requestLogin(loginParams)
-//                .then((data)=>{
-//                  this.logining = false;
-//                  //NProgress.done();
-//                  let { msg, code, user } = data;
-//                  if (code !== 200) {
-//                    this.$message({
-//                      message: msg,
-//                      type: 'error'
-//                    });
-//                  } else {
-//                    sessionStorage.setItem('user', JSON.stringify(user));
-//                    this.$router.push({ path: '/table' });
-//                  }
-//                });
+              this.$api.requestLogin(loginParams)
+                .then((data)=>{
+                  this.logining = false;
+                  let { msg, code, user } = data;
+                  if (code !== 200) {
+                    this.$message({
+                      message: msg,
+                      type: 'error'
+                    });
+                  } else {
+                    sessionStorage.setItem('user', JSON.stringify(user));
+                    this.$router.push({ path: '/table' });
+                  }
+                });
+            }else {
+              console.log('error submit!!');
+              return false;
             }
           })
         }
