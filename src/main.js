@@ -9,6 +9,9 @@ import ElementUI from 'element-ui';
 import api from './api/api'
 import 'element-ui/lib/theme-chalk/index.css';
 
+import Mock from './mock'
+Mock.bootstrap();
+
 Vue.config.productionTip = false
 
 Vue.use(ElementUI);
