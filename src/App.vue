@@ -11,6 +11,7 @@ export default {
 </script>
 
 <style lang="scss">
+
   body {
     margin: 0px;
     padding: 0px;
@@ -21,6 +22,16 @@ export default {
     font-size: 14px;
     -webkit-font-smoothing: antialiased;
   }
+  .fl{
+    float: left;
+  }
+  .fr{
+    float: right;
+  }
+  .mr0{
+    margin-right: 0px;
+  }
+
 
   #app {
     position: absolute;
@@ -34,19 +45,33 @@ export default {
     margin-right: 10px;
   }
 
+  //输入表单样式重写
+  .el-input__prefix{
+    transition:all 0s
+  }
+  .input-with-select
+    .el-input-group__prepend {
+      background-color: #fff;
+  }
+
   .el-menu-item [class^=fa] {
     vertical-align: baseline;
     margin-right: 10px;
   }
-
+  //工具条
   .toolbar {
-    background: #f2f2f2;
-    padding: 10px;
-  border:1px solid #dfe6ec;
-    margin: 10px 0px;
-  .el-form-item {
-    margin-bottom: 10px;
+    margin: 10px 0px 20px;
+    .el-form-item {
+      margin-bottom: 0px;
+      margin-right: 20px;
+    }
+    .el-form-item.mr0 {
+      margin-bottom: 0px;
+      margin-right: 0px;
+    }
   }
+  .footer-toolbar {
+    margin: 25px 0px;
   }
 
   .fade-enter-active,
@@ -58,4 +83,9 @@ export default {
   .fade-leave-active {
     opacity: 0;
   }
+  .el-table th{
+    background:rgba(245,247,250,1);
+    color: #222222;
+  }
+
 </style>
