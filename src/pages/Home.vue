@@ -1,33 +1,239 @@
 <template>
   <el-row class="container">
-    <el-col :span="24" class="header"><div class="grid-content bg-purple-dark"></div></el-col>
+    <el-col :span="24" class="header">
+      <el-col :span="4" class="userinfo">
+        <el-dropdown trigger="hover">
+          <span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar" /> {{sysUserName}}</span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>账号：{{ sysAdmin }}</el-dropdown-item>
+            <el-dropdown-item>角色：{{ '系统管理员' }}</el-dropdown-item>
+            <el-dropdown-item>归属：{{ '集团总部' }}</el-dropdown-item>
+            <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </el-col>
+      <el-col :span="4"></el-col>
+      <el-col :span="16" class="menu">
+        <el-menu
+          :default-active="activeIndex2"
+          class="el-menu"
+          mode="horizontal"
+          @select="handleSelect"
+          background-color="#202A3E"
+          text-color="#fff"
+          active-text-color="#ffd04b"
+        >
+          <el-menu-item index="0">首页</el-menu-item>
+          <el-menu-item index="1">处理中心</el-menu-item>
+          <el-submenu index="2">
+            <template slot="title">我的工作台</template>
+            <el-menu-item index="2-1">选项1</el-menu-item>
+            <el-menu-item index="2-2">选项2</el-menu-item>
+            <el-menu-item index="2-3">选项3</el-menu-item>
+            <el-submenu index="2-4">
+              <template slot="title">选项4</template>
+              <el-menu-item index="2-4-1">选项1</el-menu-item>
+              <el-menu-item index="2-4-2">选项2</el-menu-item>
+              <el-menu-item index="2-4-3">选项3</el-menu-item>
+            </el-submenu>
+          </el-submenu>
+          <el-menu-item index="3">消息中心</el-menu-item>
+          <el-menu-item index="4">订单管理</el-menu-item>
+        </el-menu>
+      </el-col>
+    </el-col>
+    <el-col :span="24" class="main">
+      <section class="content-container">
+        <div class="grid-content bg-purple-light">
+          <el-col :span="24" class="breadcrumb-container">
+            <strong class="title">{{$route.name}}</strong>
+            <el-breadcrumb separator="/" class="breadcrumb-inner">
+              <el-breadcrumb-item v-for="item in $route.matched" :key="item.path">
+                {{ item.name }}
+              </el-breadcrumb-item>
+            </el-breadcrumb>
+          </el-col>
+          <el-col :span="24" class="content-wrapper">
+            <transition name="fade" mode="out-in">
+              <router-view></router-view>
+            </transition>
+          </el-col>
+        </div>
+      </section>
+    </el-col>
   </el-row>
+
 </template>
 
 <script>
 
+    import ElCol from "element-ui/packages/col/src/col";
+
     export default {
-        name: "",
+      components: {ElCol},
+      name: "",
         data() {
             return {
-                msg: 'hello vue'
+              //菜单
+              isCollapse:true,
+              isCollapseTransition:false,
+              //顶部导航
+              activeIndex: '1',
+              activeIndex2: '1',
+              //用户头像图片
+              sysUserAvatar:'',
+              //用户姓名
+              sysUserName:'',
+              //用户账号
+              sysAdmin:'',
             }
         },
+        methods:{
+          logout() {
+            let _this = this
+
+            this.$confirm('确认要离开吗?','提示',{
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            })
+              .then(()=>{
+                sessionStorage.removeItem('user')
+                _this.$router.push('/login')
+              })
+              .catch(()=>{
+
+              })
+          },
+          handleSelect() {
+
+          }
+        },
+        mounted() {
+          let user = sessionStorage.getItem('user');
+          if(user) {
+            user = JSON.parse(user)
+            this.sysUserName = user.name || ''
+            this.sysUserAvatar = user.avatar || ''
+            this.sysAdmin = user.username || ''
+          }
+        }
     }
 </script>
 
 <style lang="scss" scoped>
   @import "../styles/vars";
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
+  }
   .container{
     position: absolute;
     top: 0px;
     bottom: 0px;
     width: 100%;
     .header{
-      height: 60px;
-      line-height: 60px;
+
+      border-bottom: solid 1px #e6e6e6;
       background: $color-primary;
       color:#fff;
+      .menu {
+        /*background: $color-primary;*/
+        height: 66px;
+        line-height: 66px;
+        padding: 4px 0;
+        .el-menu{
+          border: none;
+          box-sizing: border-box;
+        }
+      }
+      .userinfo {
+        text-align: right;
+        padding-right: 35px;
+        float: right;
+        line-height: 66px;
+        .userinfo-inner {
+          cursor: pointer;
+          color:#fff;
+          img {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            margin: 13px 0px 13px 10px;
+            float: right;
+          }
+        }
+      }
+    }
+    .main {
+      display: flex;
+      // background: #324057;
+      position: absolute;
+      top: 66px;
+      bottom: 0px;
+      overflow: hidden;
+      aside {
+        flex:0 0 230px;
+        width: 230px;
+        // position: absolute;
+        // top: 0px;
+        // bottom: 0px;
+        .el-menu{
+          height: 100%;
+        }
+        .collapsed{
+          width:60px;
+          .item{
+            position: relative;
+          }
+          .submenu{
+            position:absolute;
+            top:0px;
+            left:60px;
+            z-index:99999;
+            height:auto;
+            display:none;
+          }
+
+        }
+      }
+      .menu-collapsed{
+        flex:0 0 60px;
+        width: 60px;
+      }
+      .menu-expanded{
+        flex:0 0 230px;
+        width: 230px;
+        .el-menu.el-menu-vertical-demo{
+          width: inherit!important;
+        }
+      }
+      .content-container {
+        // background: #f1f2f7;
+        flex:1;
+        // position: absolute;
+        // right: 0px;
+        // top: 0px;
+        // bottom: 0px;
+        // left: 230px;
+        overflow-y: scroll;
+        padding: 20px;
+        .breadcrumb-container {
+          //margin-bottom: 15px;
+          .title {
+            width: 200px;
+            float: left;
+            color: #475669;
+          }
+          .breadcrumb-inner {
+            float: right;
+          }
+        }
+        .content-wrapper {
+          background-color: #fff;
+          box-sizing: border-box;
+        }
+      }
     }
   }
 </style>
