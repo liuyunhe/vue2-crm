@@ -4,11 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 //引入ElementUI
+import './assets/theme/theme-crm/index.css'
 import ElementUI from 'element-ui';
 //引入api配置文件
 import api from './api/api'
-import 'element-ui/lib/theme-chalk/index.css';
-
 import Mock from './mock'
 Mock.bootstrap();
 
