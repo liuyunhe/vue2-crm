@@ -1,17 +1,30 @@
 <template>
     <section>
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-            <el-form :inline="true" :model="filters">
-                <el-form-item>
-                    <el-input v-model="filters.name" placeholder="姓名"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="getUsers">查询</el-button>
-                </el-form-item>
-                <el-form-item>
-                   <el-button type="primary" @click="handleAdd">新增</el-button>
-                </el-form-item>
-              </el-form>
+          <el-form :inline="true" :model="filters">
+            <el-form-item>
+              <el-input placeholder="请输入内容" v-model="filters.search" prefix-icon="el-icon-search" class="input-with-select">
+                <el-select v-model="filters.type" slot="prepend" placeholder="请选择" class="input">
+                  <el-option label="餐厅名" value="1"></el-option>
+                  <el-option label="订单号" value="2"></el-option>
+                  <el-option label="用户电话" value="3"></el-option>
+                </el-select>
+              </el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="getUsers">查询</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="handleAdd">新增</el-button>
+            </el-form-item>
+            <el-form-item class="fr mr0">
+              <el-button icon="el-icon-plus">移动落地页</el-button>
+            </el-form-item>
+            <el-form-item class="fr">
+              <el-button icon="el-icon-plus">pc落地页</el-button>
+            </el-form-item>
+          </el-form>
+
         </el-col>
         <!--列表-->
         <el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
@@ -37,29 +50,48 @@
             </el-table-column>
         </el-table>
         <!--工具条-->
-        <el-col :span="24" class="toolbar">
-            <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
+        <el-col :span="24" class="footer-toolbar">
             <el-pagination background layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
             </el-pagination>
         </el-col>
     </section>
 </template>
 
-<style>
-    body {
+<style lang="scss" scoped>
 
+  .el-input__inner{
+    width: 130px;
+  }
+  .input-with-select{
+    width: 500px;
+    .input{
+      width: 130px;
+    .el-input__icon{
+      transition: all 0s;
     }
+    }
+  }
+
 </style>
 
 <script>
+    import ElCol from "element-ui/packages/col/src/col";
+    import ElFormItem from "../../../node_modules/element-ui/packages/form/src/form-item.vue";
+    import ElButton from "../../../node_modules/element-ui/packages/button/src/button.vue";
 
     export default {
-        name: "",
+      components: {
+        ElButton,
+        ElFormItem,
+        ElCol},
+      name: "",
         data() {
             return {
+
                 listLoading: false,
                 filters: {
-                  name: ''
+                  type: '',
+                  search:''
                 },
                 users: [],
                 total: 0,
@@ -71,6 +103,7 @@
         methods:{
           //获取用户列表
             getUsers() {
+              console.log(this.filters)
                 let para = {
                     page: this.page,
                     name: this.filters.name
