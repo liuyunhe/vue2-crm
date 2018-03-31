@@ -229,7 +229,7 @@
         // top: 0px;
         // bottom: 0px;
         // left: 230px;
-        overflow-y: scroll;
+        overflow-y: auto;
         padding: 30px;
         .breadcrumb-container {
           margin-bottom: 15px;
