@@ -31,29 +31,41 @@
             </el-table-column>
             <el-table-column prop="name" label="姓名" width="120" >
             </el-table-column>
-
-              <el-table-column prop="sex" label="性别" width="100" :formatter="formatSex" >
-
-                <!--<el-dropdown trigger="hover">-->
-                <!--<el-dropdown-menu slot="dropdown">-->
-                  <!--<el-dropdown-item>账号：</el-dropdown-item>-->
-                  <!--<el-dropdown-item>角色：</el-dropdown-item>-->
-                  <!--<el-dropdown-item>归属：</el-dropdown-item>-->
-                <!--</el-dropdown-menu>-->
-                <!--</el-dropdown>-->
-              </el-table-column>
-
-
+            <!--筛选-->
+            <el-table-column
+              prop="sex"
+              label="性别"
+              width="100"
+              :formatter="formatSex"
+              :filters="[{ text: '男', value: 1}, { text: '女', value: 0 }]"
+              :filter-method="filterTag"
+              filter-placement="bottom-end"
+            >
+            </el-table-column>
+            <!--筛选end-->
             <el-table-column prop="age" label="年龄" width="100" >
             </el-table-column>
             <el-table-column prop="birth" label="生日" width="120" >
             </el-table-column>
             <el-table-column prop="addr" label="地址" min-width="180" >
             </el-table-column>
-            <el-table-column label="操作" width="150">
+            <el-table-column label="操作" width="180">
                 <template scope="scope">
-                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+                  <el-tooltip class="item" effect="dark" content="浏览" placement="top">
+                    <i class="table-icon ly" size="small" @click="handleEdit(scope.$index, scope.row)"></i>
+                  </el-tooltip>
+                  <el-tooltip class="item" effect="dark" content="发布" placement="top">
+                    <i class="table-icon fb" size="small" @click="handleEdit(scope.$index, scope.row)"></i>
+                  </el-tooltip>
+                  <el-tooltip class="item" effect="dark" content="编辑" placement="top">
+                    <i class="table-icon bj" size="small" @click="handleEdit(scope.$index, scope.row)"></i>
+                  </el-tooltip>
+                  <el-tooltip class="item" effect="dark" content="删除" placement="top">
+                    <i class="table-icon sc" size="small" @click="handleEdit(scope.$index, scope.row)"></i>
+                  </el-tooltip>
+                  <el-tooltip class="item" effect="dark" content="复制链接" placement="top">
+                    <i class="table-icon fzlj" size="small" @click="handleEdit(scope.$index, scope.row)"></i>
+                  </el-tooltip>
                 </template>
             </el-table-column>
         </el-table>
@@ -95,11 +107,11 @@
     import axios from 'axios'
 
     export default {
-      components: {
-        ElButton,
-        ElFormItem,
-        ElCol},
-      name: "",
+        components: {
+          ElButton,
+          ElFormItem,
+          ElCol},
+        name: "",
         data() {
             return {
                 menuHeight:`${window.innerHeight - 285 > 300 ? window.innerHeight - 285 : 300}`,
@@ -137,14 +149,18 @@
                 this.page = val
                 this.getUsers()
             },
+            filterTag(value, row) {
+              return row.sex === value
+              //console.log(row.sex,value)
+            },
             selsChange() {
 
             },
             formatSex(row,column) {
                 return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
             },
-            handleEdit() {
-
+            handleEdit(index,row) {
+              console.log(index,row)
             },
             handleDel() {
 
