@@ -17,32 +17,51 @@
       </el-col>
       <el-col :span="16" class="menu">
         <el-menu
-          :default-active="activeIndex2"
+          :default-active="activeIndex"
           class="el-menu"
           mode="horizontal"
+          router
           @select="handleSelect"
           background-color="#202A3E"
           text-color="#fff"
           active-text-color="#fff"
         >
-          <el-menu-item index="6">系统管理</el-menu-item>
-          <el-menu-item index="5">运营助手</el-menu-item>
-          <el-menu-item index="4">项目管理</el-menu-item>
-          <el-menu-item index="3">客户管理</el-menu-item>
-          <el-submenu index="2">
-            <template slot="title">数据分析</template>
-            <el-menu-item index="2-1">选项1</el-menu-item>
-            <el-menu-item index="2-2">选项2</el-menu-item>
-            <el-menu-item index="2-3">选项3</el-menu-item>
-            <el-submenu index="2-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="2-4-1">选项1</el-menu-item>
-              <el-menu-item index="2-4-2">选项2</el-menu-item>
-              <el-menu-item index="2-4-3">选项3</el-menu-item>
+          <template v-for="(item,index) in router" v-if="!item.hidden">
+            <el-submenu :index="index+''" v-if="!item.leaf">
+              <template slot="title">{{item.name}}</template>
+              <el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>
             </el-submenu>
-          </el-submenu>
-          <el-menu-item index="1">投放管理</el-menu-item>
-          <el-menu-item index="0">首页</el-menu-item>
+          <!--<el-menu-item index="6">系统管理</el-menu-item>-->
+          <!--<el-menu-item index="5">运营助手</el-menu-item>-->
+          <!--<el-menu-item index="4">项目管理</el-menu-item>-->
+          <!--<el-menu-item index="3">客户管理</el-menu-item>-->
+          <!--<el-submenu index="2">-->
+            <!--<template slot="title">数据分析</template>-->
+            <!--<el-menu-item index="2-1">选项1</el-menu-item>-->
+            <!--<el-menu-item index="2-2">选项2</el-menu-item>-->
+            <!--<el-menu-item index="2-3">选项3</el-menu-item>-->
+            <!--<el-submenu index="2-4">-->
+              <!--<template slot="title">选项4</template>-->
+              <!--<el-menu-item index="2-4-1">选项1</el-menu-item>-->
+              <!--<el-menu-item index="2-4-2">选项2</el-menu-item>-->
+              <!--<el-menu-item index="2-4-3">选项3</el-menu-item>-->
+            <!--</el-submenu>-->
+          <!--</el-submenu>-->
+          <!--<el-submenu index="1">-->
+            <!--<template slot="title">投放管理</template>-->
+            <!--<el-menu-item index="/LandingPageSetting">落地页设置</el-menu-item>-->
+            <!--<el-menu-item index="1-2">选项2</el-menu-item>-->
+            <!--<el-menu-item index="1-3">选项3</el-menu-item>-->
+            <!--<el-submenu index="1-4">-->
+              <!--<template slot="title">选项4</template>-->
+              <!--<el-menu-item index="1-4-1">选项1</el-menu-item>-->
+              <!--<el-menu-item index="1-4-2">选项2</el-menu-item>-->
+              <!--<el-menu-item index="1-4-3">选项3</el-menu-item>-->
+            <!--</el-submenu>-->
+          <!--</el-submenu>-->
+          <!--<el-menu-item index="/">首页</el-menu-item>-->
+          </template>
+          <el-menu-item index="/">首页</el-menu-item>
         </el-menu>
       </el-col>
     </el-col>
@@ -71,16 +90,19 @@
 <script>
     import ElCol from "element-ui/packages/col/src/col";
     export default {
-      components: {ElCol},
-      name: "",
+        components: {ElCol},
+        name: "",
+        created(){
+          this.router = this.$router.options.routes.reverse()
+        },
         data() {
             return {
+              router:'',
               //菜单
               isCollapse:true,
               isCollapseTransition:false,
               //顶部导航
-              activeIndex: '1',
-              activeIndex2: '1',
+              activeIndex: '',
               //用户头像图片
               sysUserAvatar:'',
               //用户姓名
@@ -118,6 +140,7 @@
             this.sysUserAvatar = user.avatar || ''
             this.sysAdmin = user.username || ''
           }
+
         }
     }
 </script>
