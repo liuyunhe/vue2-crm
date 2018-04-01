@@ -40,9 +40,23 @@ export default {
     width: 100%;
   }
 
+  .el-menu-item [class^=fa] {
+    vertical-align: baseline;
+    margin-right: 10px;
+  }
   .el-submenu [class^=fa] {
     vertical-align: baseline;
     margin-right: 10px;
+  }
+
+  //顶部菜单栏
+  .el-menu-item{
+    padding: 0 15px;
+  }
+  .el-submenu{
+    .el-submenu__title{
+      padding: 0 15px;
+    }
   }
 
   //输入表单样式重写
@@ -54,10 +68,6 @@ export default {
       background-color: #fff;
   }
 
-  .el-menu-item [class^=fa] {
-    vertical-align: baseline;
-    margin-right: 10px;
-  }
   //工具条
   .toolbar {
     margin: 10px 0px 20px;
@@ -70,6 +80,7 @@ export default {
       margin-right: 0px;
     }
   }
+  //底部工具条
   .footer-toolbar {
     margin: 25px 0px 0px;
   }
@@ -84,6 +95,7 @@ export default {
     opacity: 0;
   }
 
+  //表格
   .el-table{
     th{
       background-color:rgba(245,247,250,1)!important;
