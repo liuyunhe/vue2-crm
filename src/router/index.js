@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import Login from '../pages/Login.vue'
 import Home from '../pages/Home.vue'
 import NotFound from '../pages/404.vue'
@@ -14,7 +13,14 @@ export default new Router({
     {
       path: '/login',
       name: 'Login',
+      leaf:true,
       component: Login
+    },
+    {
+      path: '/',
+      name: '首页',
+      leaf:true,    //没有子级菜单的标识
+      component: Home,
     },
     {
       path: '/',
@@ -29,8 +35,49 @@ export default new Router({
       ]
     },
     {
+      path: '/',
+      name: '数据分析',
+      component: Home,
+      children:[
+
+      ]
+    },
+    {
+      path: '/',
+      name: '客户管理',
+      component: Home,
+      children:[
+
+      ]
+    },
+    {
+      path: '/',
+      name: '项目管理',
+      component: Home,
+      children:[
+
+      ]
+    },
+    {
+      path: '/',
+      name: '运营助手',
+      component: Home,
+      children:[
+
+      ]
+    },
+    {
+      path: '/',
+      name: '系统管理',
+      component: Home,
+      children:[
+
+      ]
+    },
+    {
       path:'/404',
       name:'404',
+      leaf:true,
       component:NotFound
     },
     {
