@@ -50,7 +50,7 @@
             <el-table-column prop="addr" label="地址" min-width="180" >
             </el-table-column>
             <el-table-column label="操作" width="180">
-                <template scope="scope">
+                <template slot-scope="scope">
                   <el-tooltip class="item" effect="dark" content="浏览" placement="top">
                     <i class="table-icon ly" size="small" @click="handleEdit(scope.$index, scope.row)"></i>
                   </el-tooltip>
