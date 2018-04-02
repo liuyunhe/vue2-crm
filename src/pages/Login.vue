@@ -71,6 +71,14 @@
             }
           })
         }
+      },
+      mounted() {
+        let _this = this
+        window.addEventListener('keydown',function (e) {
+          if(e.keyCode == 13){
+            _this.handleSubmit2()
+          }
+        })
       }
 
     }
