@@ -5,9 +5,9 @@
         <el-dropdown trigger="hover">
           <span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar" /> {{sysUserName}}</span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>账号：{{ sysAdmin }}</el-dropdown-item>
-            <el-dropdown-item>角色：{{ '系统管理员' }}</el-dropdown-item>
-            <el-dropdown-item>归属：{{ '集团总部' }}</el-dropdown-item>
+            <el-dropdown-item disabled>账号：{{ sysAdmin }}</el-dropdown-item>
+            <el-dropdown-item disabled>角色：{{ '系统管理员' }}</el-dropdown-item>
+            <el-dropdown-item disabled>归属：{{ '集团总部' }}</el-dropdown-item>
             <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -68,13 +68,6 @@
     <el-col :span="24" class="main">
       <section class="content-container">
         <div class="grid-content bg-purple-light">
-          <el-col :span="24" class="breadcrumb-container">
-            <el-breadcrumb separator="/" class="breadcrumb-inner">
-              <el-breadcrumb-item v-for="item in $route.matched" :key="item.path">
-                {{ item.name }}
-              </el-breadcrumb-item>
-            </el-breadcrumb>
-          </el-col>
           <el-col :span="24" class="content-wrapper">
             <transition name="fade" mode="out-in">
               <router-view></router-view>
@@ -97,6 +90,7 @@
         },
         data() {
             return {
+              breadcrumb:true,
               router:'',
               //菜单
               isCollapse:true,
@@ -140,7 +134,6 @@
             this.sysUserAvatar = user.avatar || ''
             this.sysAdmin = user.username || ''
           }
-
         }
     }
 </script>
@@ -254,17 +247,7 @@
         // left: 230px;
         overflow-y: auto;
         padding: 30px;
-        .breadcrumb-container {
-          margin-bottom: 15px;
-          .title {
-            width: 200px;
-            float: left;
-            color: #475669;
-          }
-          .breadcrumb-inner {
-            float: left;
-          }
-        }
+
         .content-wrapper {
           background-color: #fff;
           box-sizing: border-box;

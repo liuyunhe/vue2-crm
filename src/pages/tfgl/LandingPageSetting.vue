@@ -1,5 +1,12 @@
 <template>
     <section>
+      <el-col :span="24" class="breadcrumb-container">
+        <el-breadcrumb separator="/" class="breadcrumb-inner">
+          <el-breadcrumb-item v-for="item in $route.matched" :key="item.path">
+            {{ item.name }}
+          </el-breadcrumb-item>
+        </el-breadcrumb>
+      </el-col>
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
           <el-form :inline="true" :model="filters">
             <el-form-item>
@@ -21,7 +28,6 @@
               <el-button icon="el-icon-plus">pc落地页</el-button>
             </el-form-item>
           </el-form>
-
         </el-col>
         <!--列表-->
         <el-table :data="users" :height='menuHeight' highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
@@ -51,26 +57,27 @@
             </el-table-column>
             <el-table-column label="操作" width="180">
                 <template slot-scope="scope">
-                  <el-tooltip class="item" effect="dark" content="浏览" placement="top">
-                    <i class="table-icon ly" size="small" @click="handleEdit(scope.$index, scope.row)"></i>
-                  </el-tooltip>
-                  <el-tooltip class="item" effect="dark" content="发布" placement="top">
-                    <i class="table-icon fb" size="small" @click="handleEdit(scope.$index, scope.row)"></i>
-                  </el-tooltip>
-                  <el-tooltip class="item" effect="dark" content="编辑" placement="top">
-                    <i class="table-icon bj" size="small" @click="handleEdit(scope.$index, scope.row)"></i>
-                  </el-tooltip>
-                  <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                    <i class="table-icon sc" size="small" @click="handleEdit(scope.$index, scope.row)"></i>
-                  </el-tooltip>
-                  <el-tooltip class="item" effect="dark" content="复制链接" placement="top">
-                    <i class="table-icon fzlj" size="small" @click="handleEdit(scope.$index, scope.row)"></i>
-                  </el-tooltip>
+                    <i class="table-icon ly"  size="small" @click="handleEdit(scope.$index, scope.row)">
+                      <div class="table-icon-tips"><span>浏览</span></div>
+                    </i>
+                    <i class="table-icon fb" size="small" @click="handleEdit(scope.$index, scope.row)">
+                      <div class="table-icon-tips"><span>发布</span></div>
+                    </i>
+                    <i class="table-icon bj" size="small" @click="handleEdit(scope.$index, scope.row)">
+                      <div class="table-icon-tips"><span>编辑</span></div>
+                    </i>
+                    <i class="table-icon sc" size="small" @click="handleEdit(scope.$index, scope.row)">
+                      <div class="table-icon-tips"><span>删除</span></div>
+                    </i>
+                    <i class="table-icon fzlj" size="small" @click="handleEdit(scope.$index, scope.row)">
+                      <div class="table-icon-tips bg"><span>复制链接</span></div>
+                    </i>
                 </template>
             </el-table-column>
         </el-table>
         <!--工具条-->
         <el-col :span="24" class="footer-toolbar">
+          <el-button type="primary" class="btn-jump-to" @click="jumpTo">跳转</el-button>
             <el-pagination
               background
               layout="prev, pager, next,jumper"
@@ -78,7 +85,9 @@
               :page-size="20"
               :total="total"
               style="float:right;">
+
             </el-pagination>
+
         </el-col>
     </section>
 </template>
@@ -114,7 +123,7 @@
         name: "",
         data() {
             return {
-                menuHeight:`${window.innerHeight - 285 > 300 ? window.innerHeight - 285 : 300}`,
+                menuHeight:`${window.innerHeight - 290 > 300 ? window.innerHeight - 290 : 300}`,
                 listLoading: false,
                 filters: {
                   type: '',
@@ -131,7 +140,6 @@
 
           //获取用户列表
             getUsers() {
-              console.log(this.filters)
                 let para = {
                     page: this.page,
                     name: this.filters.name
@@ -141,17 +149,22 @@
                 this.$api.getUserListPage(para).then((res) => {
                     this.total = res.data.total;
                     this.users = res.data.users;
+//                    console.log(this.users)
                     this.listLoading = false;
                     //NProgress.done();
                 });
             },
+            //分页器功能
             handleCurrentChange(val) {
                 this.page = val
                 this.getUsers()
             },
+            //跳转按钮
+            jumpTo() {
+              this.$emit('current-change')
+            },
             filterTag(value, row) {
               return row.sex === value
-              //console.log(row.sex,value)
             },
             selsChange() {
 

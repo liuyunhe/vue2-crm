@@ -52,13 +52,42 @@ export default {
   //顶部菜单栏
   .el-menu-item{
     padding: 0 15px;
+    border-bottom: none!important;
   }
   .el-submenu{
     .el-submenu__title{
       padding: 0 15px;
+      border-bottom: none!important;
     }
   }
-
+  .el-dropdown-menu__item.is-disabled{
+    color: #606266;
+  }
+  //面包屑只保留当前功能名称
+  .el-breadcrumb{
+    span.el-breadcrumb__item{
+      display: none;
+      &:last-child{
+        display: block;
+        font-size: 16px;
+        .el-breadcrumb__inner {
+          color: #555;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+  .breadcrumb-container {
+    margin-bottom: 15px;
+    .title {
+      width: 200px;
+      float: left;
+      color: #475669;
+    }
+    .breadcrumb-inner {
+      float: left;
+    }
+  }
   //输入表单样式重写
   .el-input__prefix{
     transition:all 0s
@@ -83,6 +112,14 @@ export default {
   //底部工具条
   .footer-toolbar {
     margin: 25px 0px 0px;
+    .btn-jump-to{
+      width: 50px;
+      height: 28px;
+      line-height: 28px;
+      float: right;
+      padding: 0 4px;
+      margin: 2px 0px 2px 20px;
+    }
   }
 
   .fade-enter-active,
@@ -100,21 +137,74 @@ export default {
     th{
       background-color:rgba(245,247,250,1)!important;
       color: #222222;
+      padding: 5px 0px;
       .cell{
+        line-height: 20px;
         span.el-table__column-filter-trigger{
           margin-left: 10px;
         }
       }
     }
-  }
+    tbody{
+        .cell{
+          line-height: 20px;
+        }
+        td:last-child{
+          .cell{
+            overflow: inherit;
+          }
+        }
+      }
+    }
   //表格图标
   i.table-icon{
     display: inline-block;
+    position: relative;
     width: 14px;
     height: 14px;
     margin-right: 10px;
     vertical-align: middle;
     cursor: pointer;
+      .table-icon-tips{
+        display: none;
+        width: 34px;
+        font-style:normal;
+        position: absolute;
+        text-align: center;
+        /*padding: 0 5px;*/
+        height: 25px;
+        background-color: #000;
+        color: #FFFFFF;
+        font-size: 12px;
+        line-height: 25px;
+        border-radius: 4px;
+        top: 30px;
+        left: -10px;
+        /*display: none;*/
+        opacity: 0.8;
+        z-index: 999;
+        &:before{
+          content: "";
+          position: absolute;
+          left: 0;
+          top: -85%;
+          width: 0;
+          height: 0;
+          margin: 10px 0 0 10px;
+          font-size: 0;
+          border: 7px solid;
+          border-color: transparent transparent #000 transparent;
+          overflow: hidden;
+        }
+      }
+    & .bg{
+      width: 60px;
+    }
+    &:hover{
+      .table-icon-tips{
+        display: block;
+      }
+    }
     //预览
     &.ly{
     background-image: url("./assets/tableIcon/icon-yl.png");
