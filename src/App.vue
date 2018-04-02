@@ -61,7 +61,7 @@ export default {
     }
   }
   .el-dropdown-menu__item.is-disabled{
-    color: #606266;
+    color: #606266!important;
   }
   //面包屑只保留当前功能名称
   .el-breadcrumb{
