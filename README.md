@@ -1,6 +1,18 @@
-# vue2-crm
+**demo**: [https://liuyunhe.github.io/vue2-crm/](https://liuyunhe.github.io/vue2-crm/)
 
-> A Vue.js project
+# vue-store-practice
+
+> A Vue.js project (2.0)
+
+> vue2 + vue-router + vue-resource + lodash
+
+> Just practice and for fun
+
+> If it helps, you can click "star" in the upper right corner to support it. thank you! ^_^
+
+> Or you can "follow", I will continue to open up more interesting projects
+
+>If you have any questions, please ask them directly in issues, or if you find any problems and have a very good solution, welcome PR 👍
 
 ## Build Setup
 
