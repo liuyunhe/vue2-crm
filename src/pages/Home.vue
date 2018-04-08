@@ -4,7 +4,7 @@
       <el-col :span="4" class="userinfo">
         <el-dropdown trigger="hover">
           <span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar" /> {{sysUserName}}</span>
-          <el-dropdown-menu slot="dropdown">
+          <el-dropdown-menu slot="dropdown" class="user-dropdown-menu">
             <el-dropdown-item disabled>账号：{{ sysAdmin }}</el-dropdown-item>
             <el-dropdown-item disabled>角色：{{ '系统管理员' }}</el-dropdown-item>
             <el-dropdown-item disabled>归属：{{ '集团总部' }}</el-dropdown-item>
@@ -143,6 +143,11 @@
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
     min-height: 400px;
+  }
+  .user-dropdown-menu{
+    .el-dropdown-menu__item.is-disabled{
+      color: #606266!important;
+    }
   }
   .container{
     position: absolute;
