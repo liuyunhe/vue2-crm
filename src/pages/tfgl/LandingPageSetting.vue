@@ -30,7 +30,7 @@
           </el-form>
         </el-col>
         <!--列表-->
-        <el-table :data="users" :height='menuHeight' highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+        <el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
             <el-table-column type="selection" width="55">
             </el-table-column>
             <el-table-column type="index" width="60">
@@ -45,7 +45,7 @@
               :formatter="formatSex"
               :filters="[{ text: '男', value: 1}, { text: '女', value: 0 }]"
               :filter-method="filterTag"
-              filter-placement="bottom-end"
+              filter-placement="bottom"
             >
             </el-table-column>
             <!--筛选end-->
@@ -123,7 +123,6 @@
         name: "",
         data() {
             return {
-                menuHeight:`${window.innerHeight - 290 > 300 ? window.innerHeight - 290 : 300}`,
                 listLoading: false,
                 filters: {
                   type: '',

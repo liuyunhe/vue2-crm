@@ -15,7 +15,7 @@
       <el-col :span="4" class="logo-bar">
         <span>全网导客平台</span>
       </el-col>
-      <el-col :span="16" class="menu">
+      <el-col  class="menu">
         <el-menu
           :default-active="activeIndex"
           class="el-menu"
@@ -26,42 +26,15 @@
           text-color="#fff"
           active-text-color="#fff"
         >
-          <template v-for="(item,index) in router" v-if="!item.hidden">
+          <!--单级菜单-->
+          <el-menu-item index="/">首页</el-menu-item>
+          <!--循环遍历多级菜单-->
+          <template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
             <el-submenu :index="index+''" v-if="!item.leaf">
               <template slot="title">{{item.name}}</template>
               <el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>
             </el-submenu>
-          <!--<el-menu-item index="6">系统管理</el-menu-item>-->
-          <!--<el-menu-item index="5">运营助手</el-menu-item>-->
-          <!--<el-menu-item index="4">项目管理</el-menu-item>-->
-          <!--<el-menu-item index="3">客户管理</el-menu-item>-->
-          <!--<el-submenu index="2">-->
-            <!--<template slot="title">数据分析</template>-->
-            <!--<el-menu-item index="2-1">选项1</el-menu-item>-->
-            <!--<el-menu-item index="2-2">选项2</el-menu-item>-->
-            <!--<el-menu-item index="2-3">选项3</el-menu-item>-->
-            <!--<el-submenu index="2-4">-->
-              <!--<template slot="title">选项4</template>-->
-              <!--<el-menu-item index="2-4-1">选项1</el-menu-item>-->
-              <!--<el-menu-item index="2-4-2">选项2</el-menu-item>-->
-              <!--<el-menu-item index="2-4-3">选项3</el-menu-item>-->
-            <!--</el-submenu>-->
-          <!--</el-submenu>-->
-          <!--<el-submenu index="1">-->
-            <!--<template slot="title">投放管理</template>-->
-            <!--<el-menu-item index="/LandingPageSetting">落地页设置</el-menu-item>-->
-            <!--<el-menu-item index="1-2">选项2</el-menu-item>-->
-            <!--<el-menu-item index="1-3">选项3</el-menu-item>-->
-            <!--<el-submenu index="1-4">-->
-              <!--<template slot="title">选项4</template>-->
-              <!--<el-menu-item index="1-4-1">选项1</el-menu-item>-->
-              <!--<el-menu-item index="1-4-2">选项2</el-menu-item>-->
-              <!--<el-menu-item index="1-4-3">选项3</el-menu-item>-->
-            <!--</el-submenu>-->
-          <!--</el-submenu>-->
-          <!--<el-menu-item index="/">首页</el-menu-item>-->
           </template>
-          <el-menu-item index="/">首页</el-menu-item>
         </el-menu>
       </el-col>
     </el-col>
@@ -85,13 +58,9 @@
     export default {
         components: {ElCol},
         name: "",
-        created(){
-          this.router = this.$router.options.routes.reverse()
-        },
         data() {
             return {
               breadcrumb:true,
-              router:'',
               //菜单
               isCollapse:true,
               isCollapseTransition:false,
@@ -166,6 +135,8 @@
       }
       .menu {
         /*background: $color-primary;*/
+        width: auto;
+        float:right;
         height: 66px;
         line-height: 66px;
         padding: 4px 0;
@@ -173,11 +144,11 @@
           border: none;
           box-sizing: border-box;
           .el-menu-item{
-            float: right;
+            float: left;
             padding: 0 20px;
           }
           .el-submenu{
-            float: right;
+
           }
         }
       }
