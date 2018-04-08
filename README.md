@@ -4,7 +4,7 @@
 
 > A Vue.js project (2.0)
 
-> vue2 + vue-router + vueX + lodash + sass + element-ui + axios
+> vue2 + vue-router + vueX + lodash + sass + element-ui + axios + es6
 
 > Just practice and for fun
 
