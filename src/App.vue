@@ -53,6 +53,9 @@ export default {
   .el-menu-item{
     padding: 0 15px;
     border-bottom: none!important;
+    &:hover{
+      background-color: #4A7DE1!important;
+    }
   }
   .el-submenu{
     .el-submenu__title{
@@ -60,9 +63,8 @@ export default {
       border-bottom: none!important;
     }
   }
-  .el-dropdown-menu__item.is-disabled{
-    color: #606266!important;
-  }
+
+
   //面包屑只保留当前功能名称
   .el-breadcrumb{
     span.el-breadcrumb__item{
@@ -97,6 +99,10 @@ export default {
       background-color: #fff;
   }
 
+.el-select-dropdown__item.hover, .el-select-dropdown__item:hover{
+  background-color: #4A7DE1!important;
+  color: #fff!important;
+}
   //工具条
   .toolbar {
     margin: 10px 0px 20px;
