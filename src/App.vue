@@ -15,12 +15,12 @@ export default {
   body {
     margin: 0px;
     padding: 0px;
-    /*background: url(assets/bg1.jpg) center !important;
-          background-size: cover;*/
-  // background: #1F2D3D;
     font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
     font-size: 14px;
     -webkit-font-smoothing: antialiased;
+  }
+  i{
+    font-style:normal
   }
   .fl{
     float: left;
@@ -28,10 +28,11 @@ export default {
   .fr{
     float: right;
   }
+  .clearfix:after{clear: both;display: block;visibility: hidden;height: 0;content: "";}
   .mr0{
     margin-right: 0px;
   }
-
+  .view-container{padding: 30px 30px 90px;}
 
   #app {
     position: absolute;
@@ -50,20 +51,44 @@ export default {
   }
 
   //顶部菜单栏
-  .el-menu-item{
-    padding: 0 15px;
-    border-bottom: none!important;
-    &:hover{
+  .crm-home{
+    .el-menu-item{
+      width: 110px;
+      text-align: center;
+      border-bottom: none!important;
+    }
+    .el-submenu{
+      .el-submenu__title{
+        width: 110px;
+        text-align: center;
+        border-bottom: none!important;
+        .el-submenu__icon-arrow {
+          display: none;
+        }
+      }
+    }
+
+  }
+  .el-menu--popup{
+    min-width: 130px;
+    text-align: center;
+    .el-menu-item:hover{
       background-color: #4A7DE1!important;
     }
+    .el-menu-item.is-active{
+      color: #4A7DE1!important;
+    }
   }
-  .el-submenu{
-    .el-submenu__title{
-      padding: 0 15px;
-      border-bottom: none!important;
+  //用户账号下拉
+  .user-dropdown-menu.el-popper[x-placement^=bottom] {
+    .popper__arrow::after{
+      border-bottom-color:rgba(26,37,58,1) ;
     }
   }
 
+  .section-container{
+    padding: 30px;
+  }
 
   //面包屑只保留当前功能名称
   .el-breadcrumb{
@@ -162,6 +187,10 @@ export default {
         }
       }
     }
+  //图标提示tooltips
+  .table-tooltip{
+    padding: 5px;
+  }
   //表格图标
   i.table-icon{
     display: inline-block;
