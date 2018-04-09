@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section class="view-container">
       <el-col :span="24" class="breadcrumb-container">
         <el-breadcrumb separator="/" class="breadcrumb-inner">
           <el-breadcrumb-item v-for="item in $route.matched" :key="item.path">
@@ -56,23 +56,23 @@
             <el-table-column prop="addr" label="地址" min-width="180" >
             </el-table-column>
             <el-table-column label="操作" width="180">
-                <template slot-scope="scope">
-                    <i class="table-icon ly"  size="small" @click="handleEdit(scope.$index, scope.row)">
-                      <div class="table-icon-tips"><span>浏览</span></div>
-                    </i>
-                    <i class="table-icon fb" size="small" @click="handleEdit(scope.$index, scope.row)">
-                      <div class="table-icon-tips"><span>发布</span></div>
-                    </i>
-                    <i class="table-icon bj" size="small" @click="handleEdit(scope.$index, scope.row)">
-                      <div class="table-icon-tips"><span>编辑</span></div>
-                    </i>
-                    <i class="table-icon sc" size="small" @click="handleEdit(scope.$index, scope.row)">
-                      <div class="table-icon-tips"><span>删除</span></div>
-                    </i>
-                    <i class="table-icon fzlj" size="small" @click="handleEdit(scope.$index, scope.row)">
-                      <div class="table-icon-tips bg"><span>复制链接</span></div>
-                    </i>
-                </template>
+              <template slot-scope="scope">
+                <el-tooltip class="item" popper-class="table-tooltip" effect="dark" content="浏览" placement="top">
+                  <i class="table-icon ly"  size="small" @click="handleEdit(scope.$index, scope.row)"></i>
+                </el-tooltip>
+                <el-tooltip class="item" popper-class="table-tooltip" effect="dark" content="发布" placement="top">
+                  <i class="table-icon fb" size="small" @click="handleEdit(scope.$index, scope.row)"></i>
+                </el-tooltip>
+                <el-tooltip class="item" popper-class="table-tooltip" effect="dark" content="编辑" placement="top">
+                  <i class="table-icon bj" size="small" @click="handleEdit(scope.$index, scope.row)"></i>
+                </el-tooltip>
+                <el-tooltip class="item" popper-class="table-tooltip" effect="dark" content="删除" placement="top">
+                  <i class="table-icon sc" size="small" @click="handleEdit(scope.$index, scope.row)"></i>
+                </el-tooltip>
+                <el-tooltip class="item" popper-class="table-tooltip"  effect="dark" content="复制链接" placement="top">
+                  <i class="table-icon fzlj" size="small" @click="handleEdit(scope.$index, scope.row)"></i>
+                </el-tooltip>
+              </template>
             </el-table-column>
         </el-table>
         <!--工具条-->
