@@ -62,7 +62,7 @@
                     });
                   } else {
                     sessionStorage.setItem('user', JSON.stringify(user));
-                    this.$router.push({ path: '/LandingPageSetting' });
+                    this.$router.push({ path: '/Home' });
                   }
                 });
             }else {
