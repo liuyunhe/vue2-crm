@@ -70,10 +70,14 @@ export default {
 
   }
   .el-menu--popup{
-    min-width: 130px;
+    min-width: 130px!important;
     text-align: center;
     .el-menu-item:hover{
       background-color: #4A7DE1!important;
+    }
+    .el-menu-item.is-active:hover{
+      background-color: #4A7DE1!important;
+      color: #fff!important;
     }
     .el-menu-item.is-active{
       color: #4A7DE1!important;
