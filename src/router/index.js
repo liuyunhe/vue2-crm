@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../pages/Login.vue'
+import TopMenu from '../components/TopMenu.vue'  //主体框架头部菜单
 import Home from '../pages/Home.vue'
 import NotFound from '../pages/404.vue'
 import LandingPageSetting from '../pages/tfgl/LandingPageSetting.vue'
@@ -20,12 +21,20 @@ export default new Router({
       path: '/',
       name: '首页',
       leaf:true,    //没有子级菜单的标识
-      component: Home,
+      component: TopMenu,
+      children:[
+        {
+          path:'/Home',
+          name:'首页内容',
+          component: Home,
+
+        }
+      ]
     },
     {
       path: '/',
       name: '投放管理',
-      component: Home,
+      component: TopMenu,
       children:[
         {
           path: '/LandingPageSetting',
@@ -37,7 +46,7 @@ export default new Router({
     {
       path: '/',
       name: '数据分析',
-      component: Home,
+      component: TopMenu,
       children:[
 
       ]
@@ -45,7 +54,7 @@ export default new Router({
     {
       path: '/',
       name: '客户管理',
-      component: Home,
+      component: TopMenu,
       children:[
 
       ]
@@ -53,7 +62,7 @@ export default new Router({
     {
       path: '/',
       name: '项目管理',
-      component: Home,
+      component: TopMenu,
       children:[
 
       ]
@@ -61,7 +70,7 @@ export default new Router({
     {
       path: '/',
       name: '运营助手',
-      component: Home,
+      component: TopMenu,
       children:[
 
       ]
@@ -69,7 +78,7 @@ export default new Router({
     {
       path: '/',
       name: '系统管理',
-      component: Home,
+      component: TopMenu,
       children:[
 
       ]
