@@ -22,6 +22,7 @@ export default new Router({
       name: '首页',
       leaf:true,    //没有子级菜单的标识
       component: TopMenu,
+      redirect: { path: '/Home'},
       children:[
         {
           path:'/Home',
@@ -40,7 +41,7 @@ export default new Router({
           path: '/LandingPageSetting',
           name: '落地页设置',
           component: LandingPageSetting,
-        }
+        },
       ]
     },
     {

@@ -51,20 +51,23 @@
               this.logining = true;
               let loginParams = { username: this.ruleForm2.account, password: this.ruleForm2.checkPass };
               //调用接口
-              this.$api.requestLogin(loginParams)
-                .then((data)=>{
-                  this.logining = false;
-                  let { msg, code, user } = data;
-                  if (code !== 200) {
-                    this.$message({
-                      message: msg,
-                      type: 'error'
-                    });
-                  } else {
-                    sessionStorage.setItem('user', JSON.stringify(user));
-                    this.$router.push({ path: '/Home' });
-                  }
-                });
+//              this.$api.requestLogin(loginParams)
+//                .then((data)=>{
+//                  this.logining = false;
+//                  let { msg, code, user } = data;
+//                  if (code !== 200) {
+//                    this.$message({
+//                      message: msg,
+//                      type: 'error'
+//                    });
+//                  } else {
+//                    sessionStorage.setItem('user', JSON.stringify(user));
+//                    this.$router.push({ path: '/Home' });
+//                  }
+//                });
+              let user = {"id":1,"username":"admin","avatar":"https://raw.githubusercontent.com/taylorchen709/markdown-images/master/vueadmin/user.png","name":"超级长的名字"}
+              sessionStorage.setItem('user', JSON.stringify(user));
+              this.$router.push({ path: '/Home' });
             }else {
               console.log('error submit!!');
               return false;

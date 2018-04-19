@@ -3,7 +3,7 @@
     <el-col :span="24" class="header">
       <el-col :span="4" class="userinfo">
         <el-dropdown trigger="hover">
-          <span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar" /> {{sysUserName}}</span>
+          <span class="el-dropdown-link userinfo-inner">{{sysUserName}}<img :src="this.sysUserAvatar" /></span>
           <el-dropdown-menu slot="dropdown" class="user-dropdown-menu">
             <el-dropdown-item disabled>账号：{{ sysAdmin }}</el-dropdown-item>
             <el-dropdown-item disabled>角色：{{ '系统管理员' }}</el-dropdown-item>
@@ -35,7 +35,7 @@
           <template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
             <el-submenu :index="index+''" v-if="!item.leaf">
               <template slot="title">{{item.name}}</template>
-              <el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>
+              <el-menu-item :class="{'is-active':$route.path == child.path}" v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>
             </el-submenu>
           </template>
         </el-menu>
@@ -106,6 +106,7 @@
             this.sysUserAvatar = user.avatar || ''
             this.sysAdmin = user.username || ''
           }
+          console.log(this.$route.path)
         }
     }
 </script>
@@ -115,9 +116,6 @@
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
     min-height: 400px;
-  }
-  .user-dropdown-menu{
-
   }
   .userinfo-btn{
     cursor: pointer;
@@ -185,9 +183,13 @@
       .userinfo {
         width: 190px;
         text-align: right;
+        padding-left: 20px;
         padding-right: 35px;
         float: right;
         line-height: 66px;
+        .el-dropdown{
+          height: 58px;
+        }
         .userinfo-inner {
           cursor: pointer;
           color:#fff;
@@ -195,8 +197,8 @@
             width: 40px;
             height: 40px;
             border-radius: 20px;
-            margin: 13px 0px 13px 10px;
-            float: right;
+            margin: 13px 10px 13px 0px;
+            float: left;
           }
         }
       }
