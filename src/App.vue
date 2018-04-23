@@ -225,11 +225,12 @@ export default {
   //表格
   .crm-table-wrap{
     width: 100%;
+    min-height: 400px;
     .crm-table{
       position: relative;
       table-layout: fixed;
       width: 100%;
-      max-width: 100%;
+      /*max-width: 100%;*/
       border-collapse: collapse;
       border-spacing: 0;
       thead{
@@ -277,9 +278,6 @@ export default {
   cursor: pointer;
   &:hover{
     background:rgba(239,242,248,1);
-    .slide-zone{
-      display: block;
-    }
   }
   span{
     position: relative;
@@ -294,14 +292,10 @@ export default {
 
   }
   .slide-zone{
-    display: none;
     width: 100%;
     position:absolute;
     top:45px;
     background-color: #fff;
-    /*&:active{*/
-      /*display: none;*/
-    /*}*/
     .border-line{
       height: 5px;
     }
