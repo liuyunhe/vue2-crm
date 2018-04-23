@@ -92,7 +92,7 @@ export default new Router({
     },
     {
       path: '*',
-      hidden: true,
+      leaf: true,
       redirect: { path: '/404' }
     }
   ]
