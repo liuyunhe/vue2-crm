@@ -20,7 +20,7 @@
       </el-col>
       <el-col  class="menu">
         <el-menu
-          :default-active="activeIndex"
+          :default-active="$route.path"
           class="el-menu crm-home"
           mode="horizontal"
           router
@@ -35,7 +35,7 @@
           <template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
             <el-submenu :index="index+''" v-if="!item.leaf">
               <template slot="title">{{item.name}}</template>
-              <el-menu-item :class="{'is-active':$route.path == child.path}" v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>
+              <el-menu-item :class="{'is-active':$route.path === child.path}" v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>
             </el-submenu>
           </template>
         </el-menu>
@@ -43,7 +43,7 @@
     </el-col>
     <el-col :span="24" class="main">
       <section class="content-container">
-        <div class="grid-content bg-purple-light">
+        <div class="grid-content bg-purple-light clearfix" style="width: 100%">
           <el-col :span="24" class="content-wrapper">
             <transition name="fade" mode="out-in">
               <router-view></router-view>
@@ -57,9 +57,7 @@
 </template>
 
 <script>
-    import ElCol from "element-ui/packages/col/src/col";
     export default {
-        components: {ElCol},
         name: "",
         data() {
             return {
