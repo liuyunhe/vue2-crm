@@ -153,7 +153,7 @@
     top: 0px;
     bottom: 0px;
     width: 100%;
-    min-width: 1280px;
+    min-width: 1350px;
     .header{
       border-bottom: solid 1px #e6e6e6;
       background: $color-top-menu;
