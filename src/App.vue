@@ -183,9 +183,12 @@ export default {
     }
   }
 
-.el-select-dropdown__item.hover, .el-select-dropdown__item:hover{
-  background-color: #4A7DE1!important;
-  color: #fff!important;
+.el-select-dropdown__item{
+  font-size: 13px!important;
+  &.hover,&:hover{
+    background-color: #4A7DE1!important;
+    color: #fff!important;
+  }
 }
   //工具条
   .toolbar {
@@ -198,12 +201,15 @@ export default {
       margin-bottom: 0px;
       margin-right: 0px;
     }
+    .el-form-item__label{
+      color: #8A96A0!important;
+    }
   }
   //底部工具条
   .footer-toolbar {
     margin: 25px 0px 0px;
     .btn-jump-to{
-      width: 50px;
+      width: 50px!important;
       height: 28px;
       line-height: 28px;
       float: right;
