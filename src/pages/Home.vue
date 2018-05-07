@@ -17,7 +17,6 @@
         <!--头部数据浮动栏end-->
         <!--功能tab菜单-->
         <div class="tap-menu">
-
           <template v-for="item in tapMenu">
             <div class="tap-zone">
               <div class="tap-zone-img">
@@ -29,7 +28,6 @@
               </div>
             </div>
           </template>
-
         </div>
         <!--功能tab菜单-->
       </div>
@@ -206,7 +204,9 @@
     background:rgba(249,250,251,1);
     padding-top: 44px;
     position: absolute;
+    min-width: 1280px;
     height: 100%;
+    overflow: auto;
     .index-container{
       width: 1280px;
       margin: 0 auto;
