@@ -15,9 +15,13 @@ export default {
   body {
     margin: 0px;
     padding: 0px;
-    font-family: Microsoft YaHei,Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, SimSun, sans-serif;
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+    color: #1A173B;
     font-size: 14px;
     -webkit-font-smoothing: antialiased;
+  }
+  ol, ul {
+    list-style: none;
   }
   div{
     box-sizing: border-box;
@@ -35,8 +39,13 @@ export default {
   .mr0{
     margin-right: 0px;
   }
-  .view-container{padding: 20px 30px 30px;}
-
+  .view-container{
+    padding: 30px;
+    min-width: 1280px;
+    max-width: 1440px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
   #app {
     position: absolute;
     top: 0px;
@@ -78,16 +87,25 @@ export default {
     text-align: center;
     padding: 0!important;
     .el-menu-item:hover{
-      background-color: #4A7DE1!important;
+      background-color: #0077FF!important;
     }
     .el-menu-item.is-active:hover{
-      background-color: #4A7DE1!important;
+      background-color: #0077FF!important;
       color: #fff!important;
     }
     .el-menu-item.is-active{
-      color: #4A7DE1!important;
+      color: #0077FF!important;
     }
   }
+
+  //DropDown下拉菜单
+  .el-dropdown-menu{
+    padding: 0!important;
+    .el-dropdown-menu__item.active{
+      color: #0077FF;
+    }
+  }
+
 
   //表单下拉
   .el-select-dropdown{
@@ -132,7 +150,7 @@ export default {
     }
   }
   .breadcrumb-container {
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     .title {
       width: 200px;
       float: left;
@@ -140,6 +158,7 @@ export default {
     }
     .breadcrumb-inner {
       float: left;
+      line-height: 32px;
     }
   }
 
@@ -148,7 +167,7 @@ export default {
     .el-input__inner{
       padding-left: 15px!important;
       padding-right: 20px!important;
-      color: #4A7DE1!important;
+      color: #1A173B!important;
     }
   }
   .el-input__prefix{
@@ -161,32 +180,33 @@ export default {
       .el-input__inner{
         transition: 0s!important;
         border: none!important;
+        color: #1A173B!important;
       }
     }
-    .el-input__inner{
-      transition: 0s!important;
-      border-color:#dcdfe6!important; ;
-    }
+    /*.el-input__inner{*/
+      /*transition: 0s!important;*/
+      /*border-color:#dcdfe6!important; ;*/
+    /*}*/
   }
-  .input-with-select:hover{
-    .el-input-group__prepend{
-      border-color:#4A7DE1!important;
-      transition: 0s!important;
-      .el-input__inner{
-        border: none!important;
-      }
-    }
-    .el-input__inner{
-      border-color:#4A7DE1!important;
-      transition: 0s!important;
+  /*.input-with-select:hover{*/
+    /*.el-input-group__prepend{*/
+      /*border-color:#4A7DE1!important;*/
+      /*transition: 0s!important;*/
+      /*.el-input__inner{*/
+        /*border: none!important;*/
+      /*}*/
+    /*}*/
+    /*.el-input__inner{*/
+      /*border-color:#4A7DE1!important;*/
+      /*transition: 0s!important;*/
 
-    }
-  }
+    /*}*/
+  /*}*/
 
 .el-select-dropdown__item{
   font-size: 13px!important;
   &.hover,&:hover{
-    background-color: #4A7DE1!important;
+    background-color: #0077FF!important;
     color: #fff!important;
   }
 }
@@ -232,6 +252,8 @@ export default {
   .crm-table-wrap{
     width: 100%;
     min-height: 400px;
+    border: 1px solid #E2E8ED;
+    border-radius: 3px;
     .crm-table{
       position: relative;
       table-layout: fixed;
@@ -249,9 +271,13 @@ export default {
             height: 45px;
             text-overflow: ellipsis;
             white-space: nowrap;
-            border-bottom: 1px solid #E2E8ED;
-            &.ctrl{
-              width: 140px;
+            /*border-bottom: 1px solid #E2E8ED;*/
+            color: #8A96A0!important;
+            &:first-child{
+              border-radius: 3px 0 0 0;
+            }
+            &:last-child{
+              border-radius: 0 3px 0 0;
             }
           }
         }
@@ -266,9 +292,27 @@ export default {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            color: #555555;
             border-bottom: 1px solid #E2E8ED;
-
+            span.ctrl{
+              color: #0077FF;
+              text-decoration: underline;
+              cursor: pointer;
+              margin-right: 20px;
+              &:last-child{
+                margin-right: 0px;
+              }
+            }
+          }
+          &:last-child{
+            td{
+              border-bottom: none;
+              &:first-child{
+                border-radius: 0 0 0 3px;
+              }
+              &:last-child{
+                  border-radius: 0 0 3px 0;
+              }
+            }
           }
         }
       }
@@ -317,10 +361,10 @@ export default {
         font-weight: normal;
         &:hover{
           color: #FFF!important;
-          background-color: #4A7DE1;
+          background-color: #0077FF;
         }
         &.active{
-          color: #4A7DE1;
+          color: #0077FF;
         }
       }
     }
