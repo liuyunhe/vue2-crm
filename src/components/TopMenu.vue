@@ -207,7 +207,7 @@
       position: absolute;
       top: 66px;
       bottom: 0px;
-      overflow: hidden;
+      /*overflow: hidden;*/
       aside {
         flex:0 0 230px;
         width: 230px;
@@ -254,7 +254,6 @@
         // left: 230px;
         overflow-y: auto;
         /*padding: 30px;*/
-
         .content-wrapper {
           background-color: #fff;
           box-sizing: border-box;
