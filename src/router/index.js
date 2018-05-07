@@ -4,7 +4,10 @@ import Login from '../pages/Login.vue'
 import TopMenu from '../components/TopMenu.vue'  //主体框架头部菜单
 import Home from '../pages/Home.vue'
 import NotFound from '../pages/404.vue'
+
+//投放管理
 import LandingPageSetting from '../pages/tfgl/LandingPageSetting.vue'
+import SelectLandingPageTemplate from '../pages/tfgl/SelectLandingPageTemplate.vue'
 
 Vue.use(Router)
 
@@ -41,6 +44,12 @@ export default new Router({
           path: '/LandingPageSetting',
           name: '落地页设置',
           component: LandingPageSetting,
+        },
+        {
+          path: '/SelectLandingPageTemplate',
+          name: '从模板中创建',
+          // hidden:true,
+          component: SelectLandingPageTemplate,
         },
       ]
     },
