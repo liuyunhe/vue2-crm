@@ -7,7 +7,7 @@
             {{ item.name }}
           </el-breadcrumb-item>
         </el-breadcrumb>
-        <el-button size="small fr">新增</el-button>
+        <el-button size="small fr" @click="addTemplate">新增</el-button>
       </el-col>
       <!--已发布/未上架-->
       <el-col :span="24" class="toolbar">
@@ -116,7 +116,8 @@
                 <td>
                   <span class="ctrl">预览</span>
                   <span class="ctrl">检测</span>
-                  <span class="ctrl" @click="handleUpdateStatus(item)">下架</span>
+                  <span class="ctrl" v-if="filters.status==='0'" @click="handleUpdateStatus(item)">下架</span>
+                  <span class="ctrl" v-if="filters.status==='1'" @click="handleUpdateStatus(item)">上架</span>
                   <span class="ctrl">复制链接</span>
                   <span class="ctrl">数据</span>
                 </td>
@@ -345,10 +346,11 @@
               this.pageType = command
               this.getUsers()
             },
-            //发布状态筛选
+            //发布状态筛选:上架、下架
             handleUpdateStatus(value) {
               console.log(value)
-              this.$confirm('确定下架该落地页?', '提示信息', {
+              let status = this.filters.status
+              this.$confirm(`确定${status =='1' ? '上':'下'}架该落地页?`, '提示信息', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
@@ -360,7 +362,7 @@
                   if(res.code == 1){
                     this.$message({
                       type: 'success',
-                      message: '已下架!'
+                      message: `已${status == '1' ? '上':'下'}架!`
                     });
 
                   }
@@ -373,14 +375,78 @@
                 });
               });
             },
-            handleDel() {
-
+            //新增按钮
+            addTemplate() {
+              const h = this.$createElement;
+              let router = this.$router;
+              this.$msgbox({
+                title: '新增落地页',
+                message: h(
+                  'div',
+                  {attrs: {class: 'template-select-dialog',}},
+                  [
+                    h('div',
+                      {attrs: {class: 'pcTemplate_select',}},
+                      [h('img',
+                        {
+                          attrs:{
+                            src:require('../../assets/landingpage/pcTemplate_select.png'),
+                            class:'pcTemplate',
+                            width:'111'
+                          },
+                          on:{
+                            click(){
+                              router.push({ path: '/SelectLandingPageTemplate'})
+                              document.querySelector(".el-message-box__close.el-icon-close").click()
+                            }
+                          }
+                        }),
+                        h('div',
+                          {attrs: {class: 'text',}},
+                          'PC端落地页'
+                        )
+                      ]
+                    ),
+                    h('div',
+                      {attrs: {class: 'mobileTemplate_select',}},
+                      [h('img',
+                        {
+                          attrs:{
+                            src:require('../../assets/landingpage/mobileTemplate_select.png'),
+                            class:'mobileTemplate',
+                            width:'72'
+                          },
+                          on:{
+                            click(){
+                              router.push({ path: '/SelectLandingPageTemplate'})
+                              document.querySelector(".el-message-box__close.el-icon-close").click()
+                            }
+                          }
+                        }),
+                        h('div',
+                          {attrs: {class: 'text',}},
+                          'PC端落地页'
+                        )
+                      ]
+                    )
+                  ]),
+                showCancelButton: true,
+                showConfirmButton:false,
+                //confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                beforeClose: (action, instance, done) => {
+                  if (action === 'confirm') {
+                    done();
+                  } else {
+                    done();
+                  }
+                }
+              }).then(action => {
+                //...
+              }).catch(action => {
+                //...
+              })
             },
-            batchRemove() {
-
-            },
-
-
         },
         mounted() {
           this.getUsers()
