@@ -4,6 +4,9 @@ const base = process.env.API_ROOT
 
 
 export default{
+  //首页数据查询
+  requstHomeData:params => {return axios.post(`http://172.16.2.208:8091/api/private/1.0/homePage/homePageCount`).then(res => res.data)},
+
   //落地页列表
   requestPagelist: params => { return axios.post(`${base}/page/list`, params).then(res => res.data); },
   //落地页模糊查询
