@@ -8,6 +8,7 @@ import NotFound from '../pages/404.vue'
 //投放管理
 import LandingPageSetting from '../pages/tfgl/LandingPageSetting.vue'
 import SelectLandingPageTemplate from '../pages/tfgl/SelectLandingPageTemplate.vue'
+import MessageSetting from '../pages/tfgl/MessageSetting.vue'
 
 Vue.use(Router)
 
@@ -50,6 +51,12 @@ export default new Router({
           name: '从模板中创建',
           // hidden:true,
           component: SelectLandingPageTemplate,
+        },
+        {
+          path: '/MessageSetting',
+          name: '落地页基本信息',
+          // hidden:true,
+          component: MessageSetting,
         },
       ]
     },
