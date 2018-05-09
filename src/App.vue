@@ -369,7 +369,27 @@ export default {
       }
     }
   }
+}
 
+.template-select-dialog{
+  display: flex;
+  flex-wrap: wrap;
+  .pcTemplate_select,.mobileTemplate_select{
+    padding-top: 30px;
+    width: 194px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    img{
+      height: 90px;
+    }
+    .text{
+      height: 60px;
+      line-height: 50px;
+      font-size: 12px;
+    }
+  }
 }
 
   //图标提示tooltips
