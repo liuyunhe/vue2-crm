@@ -3,17 +3,117 @@
     <div class="main-container">
       <div class="index-container">
         <!--头部数据浮动栏-->
-        <draggable class="data-board" v-model="dataBoard" element="div" :options="dragOptions">
-          <transition-group type="transition" :name="'flip-list'" tag="div" style="width: 100%;display: flex">
-            <div class="data-board-zone" v-for="(item,index) in dataBoard" :key="index">
-              <div class="title">{{ item.title }}</div>
-              <div class="data-numb">{{ item.numb }}</div>
-              <div class="data-fluctuation">
-                <div class="item" v-for="child in item.fluctuation">{{ child.name }}:<span>{{ child.numb }}</span><i :class="child.activeClass">{{ child.percent}}</i></div>
+        <!--<draggable class="data-board" v-model="dataBoard" element="div" :options="dragOptions">-->
+          <!--<transition-group type="transition" :name="'flip-list'" tag="div" style="width: 100%;display: flex">-->
+            <div class="data-board">
+              <div class="data-board-zone" v-if="dataBoard.deliveryObject">
+                <div class="title">当前投放项目（个）</div>
+                <div class="data-numb">{{ dataBoard.deliveryObject.nowProjectCount }}</div>
+                <div class="data-fluctuation">
+                  <div class="compare">
+                    <!--<span>较昨日</span><i class="add">{{ "111" }}</i>-->
+                  </div>
+                  <div class="item">
+                    本月新增:<span>{{ dataBoard.deliveryObject.sameMonthCount }}</span>
+                  </div>
+                  <div class="item">
+                    累计项目:<span>{{ dataBoard.deliveryObject.totalProjectCount }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="data-board-zone" v-if="dataBoard.showObject">
+                <div class="title">实时展现量（次）</div>
+                <div class="data-numb">{{ dataBoard.showObject.nowCount }}</div>
+                <div class="data-fluctuation">
+                  <div class="compare">
+                    <span>较昨日</span>
+                    <i :class="{add:dataBoard.showObject.compareCount - 0 >= 0,
+                      decrease:dataBoard.showObject.compareCount - 0 < 0}">
+                      {{ dataBoard.showObject.compareCount }}
+                    </i>
+                  </div>
+                  <div class="item">
+                    昨日展现:<span>{{ dataBoard.showObject.yesterCount }}</span>
+                  </div>
+                  <div class="item">
+                    日均展现:<span>{{ dataBoard.showObject.dailyMeanCount }}</span>
+                  </div>
+                  <div class="item">
+                    累计展现:<span>{{ dataBoard.showObject.totalCount }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="data-board-zone" v-if="dataBoard.clickNumObject">
+                <div class="title">实时点击量（次）</div>
+                <div class="data-numb">{{ dataBoard.clickNumObject.nowClickCount }}</div>
+                <div class="data-fluctuation">
+                  <div class="compare">
+                    <span>较昨日</span>
+                    <i :class="{add:dataBoard.clickNumObject.compareClickCount - 0 >= 0,
+                      decrease:dataBoard.clickNumObject.compareClickCount - 0 < 0}">
+                      {{ dataBoard.clickNumObject.compareClickCount }}
+                    </i>
+                  </div>
+                  <div class="item">
+                    昨日点击:<span>{{ dataBoard.clickNumObject.yesterClickCount }}</span>
+                  </div>
+                  <div class="item">
+                    日均点击:<span>{{ dataBoard.clickNumObject.dailyMeanClickCount }}</span>
+                  </div>
+                  <div class="item">
+                    累计点击:<span>{{ dataBoard.clickNumObject.totalClickCount }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="data-board-zone" v-if="dataBoard.guestsObject">
+                <div class="title">实时获客量（组）</div>
+                <div class="data-numb">{{ dataBoard.guestsObject.nowGuestsCount }}</div>
+                <div class="data-fluctuation">
+                  <div class="compare">
+                    <span>较昨日</span>
+                    <i :class="{add:dataBoard.guestsObject.compareGuestsCount - 0 >= 0,
+                      decrease:dataBoard.guestsObject.compareGuestsCount - 0 < 0}">
+                      {{ dataBoard.guestsObject.compareGuestsCount }}
+                    </i>
+                  </div>
+                  <div class="item">
+                    昨日获客:<span>{{ dataBoard.guestsObject.yesterGuestsCount }}</span>
+                  </div>
+                  <div class="item">
+                    日均获客:<span>{{ dataBoard.guestsObject.dailyMeanGuestsCount }}</span>
+                  </div>
+                  <div class="item">
+                    累计获客:<span>{{ dataBoard.guestsObject.totalGuestsCount }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="data-board-zone" v-if="dataBoard.consumObject">
+                <div class="title">实时消费金额（元）</div>
+                <div class="data-numb">{{ dataBoard.consumObject.nowConsumCount }}</div>
+                <div class="data-fluctuation">
+                  <div class="compare">
+                    <span>较昨日</span>
+                    <i
+                      :class="{add:dataBoard.consumObject.compareConsumCount - 0 >= 0,
+                      decrease:dataBoard.consumObject.compareConsumCount - 0 < 0}">
+                      {{ dataBoard.consumObject.compareConsumCount}}
+                    </i>
+                  </div>
+                  <div class="item">
+                    昨日消费:<span>{{ dataBoard.consumObject.yesterConsumCount }}</span>
+                  </div>
+                  <div class="item">
+                    日均消费:<span>{{ dataBoard.consumObject.dailyMeanConsumCount }}</span>
+                  </div>
+                  <div class="item">
+                    累计消费:<span>{{ dataBoard.consumObject.totalConsumCount }}</span>
+                  </div>
+                </div>
               </div>
             </div>
-          </transition-group>
-        </draggable>
+
+          <!--</transition-group>-->
+        <!--</draggable>-->
         <!--头部数据浮动栏end-->
         <!--功能tab菜单-->
         <div class="tap-menu">
@@ -56,139 +156,84 @@
           };
         },
       },
+      created(){
+        this.$api.requstHomeData('').then((res)=>{
+          console.log(res)
+          if(res.code == "1"){
+            this.dataBoard = res.data
+          }
+        })
+      },
       data() {
         return {
           editable:true,
-          dataBoard: [
-            {
-              title:"展现量（UV）",
-              numb:"22,330",
-              fluctuation:[
-                {
-                  name:"昨日展现",
-                  numb:"20,000",
-                  percent:"11.50%",
-                  activeClass:"decrease"
-                },
-                {
-                  name:"日均展现",
-                  numb:"20,000",
-                  percent:"11.50%",
-                  activeClass:"add"
-                },
-                {
-                  name:"累计展现",
-                  numb:"350,782",
-                  percent:"11.50%",
-                  activeClass:"add"
-                }
-              ]
+          dataBoard:{
+            "clickNumObject": {
+              "nowClickCount": "",
+              "yesterClickCount": "",
+              "dailyMeanClickCount": "",
+              "compareClickCount": "",
+              "totalClickCount": ""
             },
-            {
-              title:"获客数（组）",
-              numb:"168",
-              fluctuation:[
-                {
-                  name:"昨日获客",
-                  numb:"20,000",
-                  percent:"11.50%",
-                  activeClass:"add"
-                },
-                {
-                  name:"日均获客",
-                  numb:"20,000",
-                  percent:"11.50%",
-                  activeClass:"decrease"
-                },
-                {
-                  name:"累计获客",
-                  numb:"350,782",
-                  percent:"11.50%",
-                  activeClass:"add"
-                }
-              ]
+            "showObject": {
+              "compareCount": "",
+              "nowCount": "",
+              "dailyMeanCount": "",
+              "totalCount": "",
+              "yesterCount": ""
             },
-            {
-              title:"消费金额（元）",
-              numb:"22,330",
-              fluctuation:[
-                {
-                  name:"昨日消费",
-                  numb:"20,000",
-                  percent:"11.50%",
-                  activeClass:"add"
-                },
-                {
-                  name:"日均消费",
-                  numb:"20,000",
-                  percent:"11.50%",
-                  activeClass:"decrease"
-                },
-                {
-                  name:"累计消费",
-                  numb:"350,782",
-                  percent:"11.50%",
-                  activeClass:"add"
-                }
-              ]
+            "consumObject": {
+              "compareConsumCount": "",
+              "totalConsumCount": "",
+              "dailyMeanConsumCount": "",
+              "nowConsumCount": "",
+              "yesterConsumCount": ""
             },
-            {
-              title:"客单价（元）",
-              numb:"22,330",
-              fluctuation:[
-                {
-                  name:"昨日单价",
-                  numb:"20,000",
-                  percent:"11.50%",
-                  activeClass:"decrease"
-                },
-                {
-                  name:"日均单价",
-                  numb:"20,000",
-                  percent:"11.50%",
-                  activeClass:"decrease"
-                },
-                {
-                  name:"累计单价",
-                  numb:"350,782",
-                  percent:"11.50%",
-                  activeClass:"add"
-                }
-              ]
-            }
-          ],
+            "deliveryObject": {
+              "nowProjectCount": "",
+              "totalProjectCount": "",
+              "sameMonthCount": ""
+            },
+            "guestsObject": {
+              "compareGuestsCount": "",
+              "nowGuestsCount": "",
+              "yesterGuestsCount": "",
+              "totalGuestsCount": "",
+              "dailyMeanGuestsCount": ""
+            },
+          } ,
           tapMenu:[
-            {
-              title:"投放中心",
-              context:"最长只有两行字，最多不超过15个字…",
-              src:require('../assets/homeicon/icon-home-1.png')
-            },
-            {
-              title:"数据分析",
-              context:"最长只有两行字，最多不超过15个字…",
-              src:require('../assets/homeicon/icon-home-2.png')
-            },
-            {
-              title:"客户管理",
-              context:"最长只有两行字，最多不超过15个字…",
-              src:require('../assets/homeicon/icon-home-3.png')
-            },
             {
               title:"项目管理",
               context:"最长只有两行字，最多不超过15个字…",
               src:require('../assets/homeicon/icon-home-4.png')
             },
             {
-              title:"运营助手",
+              title:"落地页制作",
               context:"最长只有两行字，最多不超过15个字…",
               src:require('../assets/homeicon/icon-home-5.png')
             },
             {
-              title:"系统设置",
+              title:"投放推广",
+              context:"最长只有两行字，最多不超过15个字…",
+              src:require('../assets/homeicon/icon-home-1.png')
+            },
+            {
+              title:"客户列表",
+              context:"最长只有两行字，最多不超过15个字…",
+              src:require('../assets/homeicon/icon-home-3.png')
+            },
+            {
+              title:"页面分析",
+              context:"最长只有两行字，最多不超过15个字…",
+              src:require('../assets/homeicon/icon-home-2.png')
+            },
+            {
+              title:"钉钉通报",
               context:"最长只有两行字，最多不超过15个字…",
               src:require('../assets/homeicon/icon-home-6.png')
             },
-          ]
+          ],
         }
       },
     }
@@ -212,15 +257,15 @@
       margin: 0 auto;
       .data-board{
         width: 100%;
-        height: 200px;
+        height: 215px;
         display: flex;
         background:rgba(255,255,255,1);
         border-radius: 2px;
         padding: 30px 0;
         margin-bottom: 30px;
         .data-board-zone{
-          width: 25%;
-          padding: 0 40px;
+          width: 20%;
+          padding: 0 60px;
           border-right: 1px solid #F1F4F6;
 
           &:last-child{
@@ -233,26 +278,25 @@
             color: #555;
           }
           .data-numb{
-            height: 50px;
-            line-height: 50px;
+            height: 40px;
+            line-height:50px;
             color: #222;
             font-size: 28px;
             font-weight: bold;
-            margin-bottom: 10px;
+            /*margin-bottom: 10px;*/
           }
           .data-fluctuation{
-            .item{
-              height: 20px;
-              line-height: 20px;
-              color: #555;
-              font-size: 12px;
+            .compare{
+              margin-bottom: 15px;
+              height: 16px;
               span{
-                margin-left: 10px;
+                color: #999;
+                text-align: center;
+                font-size: 12px;
               }
               i.add{
                 color: #E7343A;
                 font-size: 12px;
-                float: right;
                 &:before{
                   content: "";
                   border-width: 5px 5px 7px 5px;
@@ -266,7 +310,6 @@
               i.decrease{
                 color: #2C9414;
                 font-size: 12px;
-                float: right;
                 &:before{
                   content: "";
                   border-width: 7px 5px 5px 5px;
@@ -276,6 +319,15 @@
                   top: 11px;
                   margin: 5px;
                 }
+              }
+            }
+            .item{
+              height: 20px;
+              line-height: 20px;
+              color: #555;
+              font-size: 12px;
+              span{
+                margin-left: 10px;
               }
             }
           }
