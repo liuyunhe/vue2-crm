@@ -7,7 +7,7 @@
           {{ item.name }}
         </el-breadcrumb-item>
       </el-breadcrumb>
-      <el-button size="small fr">取消</el-button>
+      <el-button size="small fr" @click="cancelSelect">取消</el-button>
     </el-col>
     <!--筛选功能-->
     <el-col :span="24" class="tag-title toolbar" style="margin-bottom: 60px">
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-    import multiplyChooser from '../../components/multiplyChooser.vue'
+    import multiplyChooser from '../../components/base/multiplyChooser.vue'
 
     export default {
       components:{
@@ -134,6 +134,20 @@
         }
       },
       methods:{
+        cancelSelect(){
+          let router = this.$router
+          this.$alert('确定取消创建模板', '提示信息', {
+            showCancelButton: true,
+            cancelButtonText: '取消',
+            confirmButtonText: '确定',
+            type: 'warning',
+            callback: action => {
+              if(action == 'confirm'){
+                router.push({path:'/LandingPageSetting'})
+              }
+            }
+          })
+        },
         ontagsChange(index,arr){
           console.log(index,arr)
         }
@@ -176,10 +190,10 @@
       background-size: cover;
       background-repeat: no-repeat;
       .mask{
+        height: 290px;
         opacity: 0;
         transition: opacity 0.3s linear;
         .mask-layer{
-          position: absolute;
           width: 216px;
           height: 290px;
           top:0;
@@ -188,6 +202,8 @@
           opacity: 0.8;
         }
         .ctrl{
+          opacity: 0;
+          transition: opacity 0.3s linear;
           position: absolute;
           top:93px;
           left: 55px;
@@ -211,10 +227,14 @@
             }
           }
         }
+        &:hover{
+          opacity: 1;
+          .ctrl{
+            opacity: 1;
+          }
+        }
       }
-      &:hover .mask{
-        opacity: 1;
-      }
+
       &:nth-child(6n){
         margin-right: 0px;
       }
