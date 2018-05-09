@@ -1,6 +1,6 @@
 **demo**: [https://liuyunhe.github.io/vue2-crm/](https://liuyunhe.github.io/vue2-crm/)
 
-# vue-store-practice
+# vue-crm
 
 > A Vue.js project (2.0)
 
