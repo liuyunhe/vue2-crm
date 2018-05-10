@@ -29,7 +29,7 @@
             <div class="content">(功能开发中)</div>
           </div>
         </div>
-        <div class="template" v-for="(item,index) in templateList" :style="{backgroundImage:`url(${item.image})`}">
+        <div class="template" v-for="(item,index) in templateList" :style="{backgroundImage:`url(${picList.image})`}">
           <div class="mask">
             <div class="mask-layer"></div>
             <div class="ctrl">
@@ -47,7 +47,7 @@
 
 <script>
     import multiplyChooser from '../../components/base/multiplyChooser.vue'
-
+    import _ from 'lodash'
     export default {
       components:{
         multiplyChooser
@@ -73,11 +73,11 @@
               tags:[
                 {
                   label:'长图型',
-                  value:0
+                  value:1
                 },
                 {
                   label:'翻页型',
-                  value:1
+                  value:2
                 }
               ]
             },
@@ -86,51 +86,54 @@
               tags:[
                 {
                   label:'通 用',
-                  value:0
+                  value:'通用'
                 },
                 {
                   label:'优 惠',
-                  value:1
+                  value:'优惠'
                 },
                 {
                   label:'户 型',
-                  value:2
+                  value:'户型'
                 },
                 {
                   label:'区 位',
-                  value:3
+                  value:'区位'
                 },
                 {
                   label:'配 套',
-                  value:4
+                  value:'配套'
                 },
                 {
                   label:'教 育',
-                  value:5
+                  value:'教育'
                 },
                 {
                   label:'交 通',
-                  value:6
+                  value:'交通'
                 },
                 {
                   label:'园 林',
-                  value:7
+                  value:'园林'
                 },
                 {
                   label:'品 牌',
-                  value:8
+                  value:'品牌'
                 },
               ],
             }
           ],
           templateList:[
-            {
-              image:require('../../assets/example.png')
-            },
-            {
-              image:require('../../assets/loginbg.png')
-            }
-          ]
+
+          ],
+          picList:{
+            image:require('../../assets/example.png')
+          },
+          requestparams:{
+            "showProjects":[],
+            "viewWays":[],
+            "importants":[]
+          }
         }
       },
       methods:{
@@ -149,8 +152,22 @@
           })
         },
         ontagsChange(index,arr){
-          console.log(index,arr)
+          let keys = Object.keys(this.requestparams)
+          this.requestparams[keys[index]] = _.map(arr,item =>{
+              return item.value
+          })
+          this.getTemplateList(this.requestparams)
+        },
+        getTemplateList(params) {
+          this.$api.requstTemplateList(params).then(res => {
+            this.templateList = res.data.list
+          }).catch(err => {
+
+          })
         }
+      },
+      mounted() {
+        this.getTemplateList(this.requestparams)
       }
     }
 </script>
