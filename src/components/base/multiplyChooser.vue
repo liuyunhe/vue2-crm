@@ -1,3 +1,6 @@
+<!--props：selections-->
+<!--事件：@on-change-->
+<!--返回参数：newObjArry-->
 <template>
     <div class="crm-selections">
       <ul class="selections-list">
