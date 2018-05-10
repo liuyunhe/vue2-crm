@@ -13,7 +13,7 @@
       <el-col :span="24" class="toolbar">
         <el-radio-group v-model="filters.status" :size="'small'" @change="getStatus">
           <el-radio-button label="0" >已发布</el-radio-button>
-          <el-radio-button label="1" @change="getStatus">未上架</el-radio-button>
+          <el-radio-button label="1" >未上架</el-radio-button>
         </el-radio-group>
       </el-col>
       <!--查询表单-->
