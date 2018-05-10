@@ -62,6 +62,12 @@ export default {
     margin-right: 10px;
   }
 
+  //按钮
+  .el-button.important{
+    color: #0077ff!important;
+    border-color: #0077ff!important;
+  }
+
   //顶部菜单栏
   .crm-home{
     .el-menu-item{
