@@ -9,6 +9,7 @@ promise.polyfill();
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store'
 //引入ElementUI
 import './assets/theme/theme-crm/index.css'
 import ElementUI from 'element-ui';
@@ -16,6 +17,7 @@ import ElementUI from 'element-ui';
 import api from './api/api'
 // import Mock from './mock'
 // Mock.bootstrap();
+
 
 Vue.config.productionTip = false
 
@@ -39,6 +41,7 @@ router.beforeEach((to, from, next) => {
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
