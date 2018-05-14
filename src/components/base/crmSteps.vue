@@ -33,7 +33,10 @@
 </script>
 
 <style lang="scss" scoped>
-  .crm-step{
+  .crm-step-wrap{
+    height: 40px;
+    border-bottom:1px solid #F2F4F8;
+    .crm-step{
     float: left;
     height: 20px;
     line-height: 20px;
@@ -73,4 +76,7 @@
       }
     }
   }
+
+  }
+
 </style>
