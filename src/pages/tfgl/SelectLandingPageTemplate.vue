@@ -34,7 +34,7 @@
             <div class="mask-layer"></div>
             <div class="ctrl">
               <div class="btn browse">浏 览</div>
-              <div class="btn use">应 用</div>
+              <div class="btn use" @click="useTemplate(item)">应 用</div>
             </div>
           </div>
 
@@ -51,6 +51,9 @@
     export default {
       components:{
         multiplyChooser
+      },
+      created(){
+        this.getTemplateList(this.requestparams)
       },
       data() {
         return {
@@ -164,10 +167,14 @@
           }).catch(err => {
 
           })
+        },
+        useTemplate(item){
+          this.$store.commit('setLandingPageType', item.uuid)
+          this.$router.push({path:'/MessageSetting'})
         }
       },
       mounted() {
-        this.getTemplateList(this.requestparams)
+
       }
     }
 </script>
