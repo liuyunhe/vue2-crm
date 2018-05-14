@@ -335,11 +335,14 @@
             },
             //超过十个字添加title属性
             istitle(value){
+              if(value){
                 if(value.length>5){
                   return value
                 }else{
                   return ""
                 }
+              }
+
             },
             //pageType选择
             pageTypeHandle(command){
