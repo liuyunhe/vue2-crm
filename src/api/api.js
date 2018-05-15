@@ -20,6 +20,8 @@ export default{
   //落地页所属项目查询
   requestProjectList: params => {return axios.post(`${base}/page/project/list`,params).then(res => res.data)},
   //落地页设置step1基本设置保存
-  saveSettingStep1: params => {return axios.post(`${base}/page/save-info`,params).then(res => res.data)}
+  saveSettingStep1: params => {return axios.post(`${base}/page/save-update-info`,params).then(res => res.data)},
+  //获取落地页模板标签/插件列表
+  requstLabelList: params => {return axios.post(`${base}/page/label/list`,params).then(res => res.data)}
 }
 

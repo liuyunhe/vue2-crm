@@ -5,7 +5,7 @@
       <!--步骤条-->
       <crm-steps :steps="settingSteps" :active="settingStepsActive" :stepsClass="'mb30'"></crm-steps>
       <!--步骤1-->
-      <div id="step1" class="clearfix" v-if="false">
+      <div id="step1" class="clearfix" v-if="step1Show">
         <el-form :model="steps1" :size="'small'" label-width="100px">
           <el-form-item label="落地页名称">
             <el-input v-model="steps1.pageName" placeholder="输入落地页名称" maxlength="32"></el-input>
@@ -36,7 +36,7 @@
           <el-form-item label="400电话">
             <span style="margin: 0 10px;">400 -</span>
             <el-input v-model="callTel1" class="callTel1" placeholder="数字" maxlength="32"></el-input>
-            <span style="margin: 0 6px;">转</span>
+            <span style="margin: 0 5.5px;">转</span>
             <el-input v-model="callTel2" class="callTel2" placeholder="数字" maxlength="32"></el-input>
             <span class="important">*</span>
           </el-form-item>
@@ -73,13 +73,13 @@
         </div>
       </div>
       <!--步骤2-->
-      <div id="step2" >
+      <div id="step2" v-if="step2Show">
         <div class="left">
           <!--头图设置-->
           <div class="top-setting">
-            <div class="banner item">
-              <img class="icon" src="../../assets/landingpage/settings/setting_banner_icon@3x.png" width="40" alt="">
-              <p>头图</p>
+            <div class="banner item" :class="{active:item.name == step2Active}" v-for="item in step2.basic" @click="editItem(item)">
+              <img class="icon" :src="item.url" width="40" alt="">
+              <p>{{ item.name }}</p>
               <div class="edit"></div>
             </div>
           </div>
@@ -87,70 +87,19 @@
           <div class="func-setting">
             <div class="title">
               <span>导航栏与模块</span>
-              <el-button class="important" size="small fr">编辑导航栏</el-button>
+              <el-button class="important" size="small fr" @click="editNav('导航栏')">编辑导航栏</el-button>
             </div>
             <div class="body">
-              <div class="item">
-                <img class="icon" src="../../assets/landingpage/settings/setting_banner_icon@3x.png" width="40" alt="">
-                <p>头图</p>
-                <div class="edit"></div>
-                <div class="dl"></div>
-              </div>
-              <div class="item">
-                <img class="icon" src="../../assets/landingpage/settings/setting_banner_icon@3x.png" width="40" alt="">
-                <p>头图</p>
-                <div class="edit"></div>
-              </div>
-              <div class="item">
-                <img class="icon" src="../../assets/landingpage/settings/setting_banner_icon@3x.png" width="40" alt="">
-                <p>头图</p>
-                <div class="edit"></div>
-              </div>
-              <div class="item">
-                <img class="icon" src="../../assets/landingpage/settings/setting_banner_icon@3x.png" width="40" alt="">
-                <p>头图</p>
-                <div class="edit"></div>
-              </div>
-              <div class="item">
-                <img class="icon" src="../../assets/landingpage/settings/setting_banner_icon@3x.png" width="40" alt="">
-                <p>头图</p>
-                <div class="edit"></div>
-              </div>
-              <div class="item">
-                <img class="icon" src="../../assets/landingpage/settings/setting_banner_icon@3x.png" width="40" alt="">
-                <p>头图</p>
-                <div class="edit"></div>
-              </div>
-              <div class="item">
-                <img class="icon" src="../../assets/landingpage/settings/setting_banner_icon@3x.png" width="40" alt="">
-                <p>头图</p>
-                <div class="edit"></div>
-              </div>
-              <div class="item">
-                <img class="icon" src="../../assets/landingpage/settings/setting_banner_icon@3x.png" width="40" alt="">
-                <p>头图</p>
-                <div class="edit"></div>
-              </div>
-              <div class="item">
-                <img class="icon" src="../../assets/landingpage/settings/setting_banner_icon@3x.png" width="40" alt="">
-                <p>头图</p>
-                <div class="edit"></div>
-              </div>
-              <div class="item">
-                <img class="icon" src="../../assets/landingpage/settings/setting_banner_icon@3x.png" width="40" alt="">
-                <p>头图</p>
-                <div class="edit"></div>
-              </div>
-              <div class="item">
-                <img class="icon" src="../../assets/landingpage/settings/setting_banner_icon@3x.png" width="40" alt="">
-                <p>头图</p>
-                <div class="edit"></div>
-              </div>
-              <div class="item">
-                <img class="icon" src="../../assets/landingpage/settings/setting_banner_icon@3x.png" width="40" alt="">
-                <p>头图</p>
-                <div class="edit"></div>
-              </div>
+              <draggable class="item-list" v-model="step2.label" element="div" :options="dragOptions">
+                <transition-group type="transition" :name="'flip-list'" tag="div" style="width: 928px;display: flex;flex-wrap: wrap;">
+                  <div class="item" :class="{active:item.name == step2Active}"  v-for="(item,index) in step2.label" :key="index" @click="editItem(item,index)">
+                    <img class="icon" :src="`${URL_ROOT}${item.url}`" width="40" alt="">
+                    <p>{{ item.name }}</p>
+                    <div class="edit"></div>
+                    <div class="dl"></div>
+                  </div>
+                </transition-group>
+              </draggable>
             </div>
             <div class="body">
               <div class="item add">
@@ -166,33 +115,64 @@
               <el-button class="important" size="small fr">编辑插件</el-button>
             </div>
             <div class="body">
-              <div class="item">
-                <img class="icon" src="../../assets/landingpage/settings/setting_banner_icon@3x.png" width="40" alt="">
-                <p>头图</p>
+              <div class="item" :class="{active:item.name == step2Active}" v-for="item in step2.plugins" @click="editItem(item)">
+                <img class="icon" :src="`${URL_ROOT}${item.url}`" width="40" alt="">
+                <p>{{ item.name }}</p>
                 <div class="edit"></div>
                 <div class="dl"></div>
-              </div>
-              <div class="item">
-                <img class="icon" src="../../assets/landingpage/settings/setting_banner_icon@3x.png" width="40" alt="">
-                <p>头图</p>
-                <div class="edit"></div>
-              </div>
-              <div class="item">
-                <img class="icon" src="../../assets/landingpage/settings/setting_banner_icon@3x.png" width="40" alt="">
-                <p>头图</p>
-                <div class="edit"></div>
-              </div>
-              <div class="item">
-                <img class="icon" src="../../assets/landingpage/settings/setting_banner_icon@3x.png" width="40" alt="">
-                <p>头图</p>
-                <div class="edit"></div>
               </div>
             </div>
           </div>
         </div>
-        <div class="right">
-          <div class="wrap">
-
+        <!--功能-->
+        <div class="right" v-if="step2Active">
+          <div class="wrap" >
+            <div class="title clearfix">
+              <img class="title-icon" v-if="step2Right.type!=0" :src="`${URL_ROOT}${step2Right.url}`" width="40">
+              <img class="title-icon" v-else="step2Right.type==0" :src="`${step2Right.url}`" width="40">
+              <div class="title-name">{{step2Right.name}}设置</div>
+            </div>
+            <div class="form clearfix" v-if="step2Right.type == 1">
+              <div class="form-item">
+                <div class="form-item-name">在导航栏中的名称</div>
+                <el-input
+                  class="form-item-input"
+                  :placeholder="step2Right.name"
+                  maxlength="4"
+                  :size="'small'"
+                  v-model="step2Right.rename"
+                  @change="step2.label[step2Right.idx].rename = step2Right.rename"
+                >
+                </el-input>
+              </div>
+            </div>
+            <el-button
+              class="important form-item-btn"
+              :size="'small'"
+              @click="a"
+            >编辑模块内容</el-button>
+          </div>
+        </div>
+        <!--按钮-->
+        <div class="right" v-if="step2BtnActive">
+          <div class="wrap" >
+            <div class="title clearfix">
+              <div class="title-name">{{step2BtnActive}}设置</div>
+            </div>
+            <div class="form clearfix" >
+              <div class="form-item">
+                <div class="form-item-name">在界面状态</div>
+                <el-radio-group class="radio" v-model="navVisibility">
+                  <el-radio :label="1">显示</el-radio>
+                  <el-radio :label="2">隐藏</el-radio>
+                </el-radio-group>
+              </div>
+            </div>
+            <el-button
+              class="important form-item-btn"
+              :size="'small'"
+              @click="b"
+            >编辑模块内容</el-button>
           </div>
         </div>
       </div>
@@ -214,40 +194,46 @@
 </template>
 
 <script>
+    import { URL_ROOT } from '../../common/js/types'
     import _ from 'lodash'
+    import draggable from 'vuedraggable'
     import crmSteps from '../../components/base/crmSteps.vue'
     export default {
       components:{
-        crmSteps
+        crmSteps,
+        draggable
       },
       created(){
-        console.log(this.$store.getters.getLandingPageType)
-        //请求落地页机构
-        this.$api.requestOrgList('').then(res =>{
-          if(res.code ===1){
-            this.orgNameList = res.data
-          }
-        }).catch(err => {
-
-        })
-        //请求落地页项目
-        this.$api.requestProjectList('').then(res =>{
-          if(res.code ===1){
-            this.projectList = res.data
-          }
-        }).catch(err => {
-
-        })
+        //获取模板标签/插件
+        let templateId ={"templateId":this.$store.getters.getLandingPageType == '' ? 'a7d22e47-4aad-11e8-a730-00163e04791f': this.$store.getters.getLandingPageType}
+        console.log(templateId)
+        this.getLabel(templateId)
+        //请求落地页机构下拉菜单
+        this.getOrgList()
+        //请求落地页项目下拉菜单
+        this.getProjectList()
+      },
+      computed:{
+        dragOptions() {
+          return  {
+            animation: 300,
+            group: 'description',
+            disabled: !this.editable,
+            ghostClass: 'ghost'
+          };
+        },
       },
       data() {
         return {
+          URL_ROOT,
+          editable:true,
           //步骤条传参
           settingSteps:["基本信息","编辑模块","编辑内容"],
           settingStepsActive:0,
 
           //步骤先是标识
-          step1Show:true,
-          step2Show:false,
+          step1Show:false,
+          step2Show:true,
           step3Show:false,
 
           //步骤1
@@ -257,7 +243,8 @@
             projectName:"",
             projectCode:"",
             callTel:"",
-            label:""
+            label:"",
+            uuid:""
           },
           //400电话
           callTel1:"",
@@ -269,12 +256,71 @@
           step1Save:false,
           steps1Warining:false,
           step1SaveObject:{},
+
+          //步骤二
+          step2:{
+            basic:[
+              {
+                name:"头图",
+                url:require('../../assets/landingpage/settings/setting_banner_icon@3x.png'),
+                type: 0,
+                order:0
+              }
+            ],
+            label:[],
+            plugins:[]
+          },
+          //功能
+          step2Active:"",
+          step2Right:{},
+          step2params:[],
+          //按钮
+          step2BtnActive:"",
+          navVisibility:1
         }
       },
       watch:{
 
       },
       methods:{
+        a(){
+          console.log(this.step2.label)
+        },
+        b(){
+          console.log(this.step2BtnRadio)
+        },
+        //获取模板标签/插件
+        getLabel(templateId){
+          this.$api.requstLabelList(templateId).then(res =>{
+            if(res.code === 1){
+              console.log(res.data);
+              this.step2.label = res.data.label
+              this.step2.plugins = res.data.plugins
+            }
+          }).catch(err=>{
+
+          })
+        },
+        //请求落地页机构下拉菜单
+        getOrgList(){
+          this.$api.requestOrgList('').then(res =>{
+            if(res.code ===1){
+              this.orgNameList = res.data
+            }
+          }).catch(err => {
+
+          })
+        },
+        //请求落地页项目下拉菜单
+        getProjectList(){
+          this.$api.requestProjectList('').then(res =>{
+            if(res.code ===1){
+              this.projectList = res.data
+            }
+          }).catch(err => {
+
+          })
+        },
         //按钮功能
         nextStep() {
           console.log(this.step1Save)
@@ -330,8 +376,8 @@
                   this.$api.saveSettingStep1(this.steps1).then(res =>{
                     console.log(res)
                     if(res.code == 1){
-                      //vuex中存入当前落地页pageId
 
+                      //vuex中存入当前落地页pageId
                       this.$store.commit('setLandingPageId',res.data.uuid)
                       console.log('pageId:'+this.$store.getters.getLandingPageId)
                       if(flag){     //按钮是保存
@@ -354,7 +400,29 @@
               }
             })
           }
+          },
+
+        //第二步选择编辑模块
+        editItem(item,index){
+          this.step2BtnActive=""
+          if(this.step2Active == item.name){
+            this.step2Active = ""
+          }else {
+            this.step2Active = item.name
+            this.step2Right = Object.assign({},item)
+            this.step2Right.idx = index
           }
+
+        },
+        //第二步编辑菜单按钮
+        editNav(name){
+          this.step2Active=""
+          if(this.step2BtnActive == name){
+            this.step2BtnActive = ""
+          }else{
+            this.step2BtnActive = name
+          }
+        }
       },
       mounted() {
 
@@ -363,6 +431,10 @@
 </script>
 
 <style lang="scss" scoped>
+  .ghost {
+    opacity: 0;
+    background: #C8EBFB;
+  }
   .el-button{width: 100px;margin-left: 10px}
   .mb30{margin-bottom: 30px}
   #step1{
@@ -484,7 +556,7 @@
             background-repeat: no-repeat;
             background-size: cover;
           }
-          &:hover{
+          &.active{
             border-color: #0077ff;
             .edit{
               display: block;
@@ -548,7 +620,7 @@
               background-repeat: no-repeat;
               background-size: cover;
             }
-            &:hover{
+            &.active{
               border-color: #0077ff;
               .edit{
                 display: block;
@@ -571,6 +643,47 @@
         height: 100%;
         border-top: 1px solid #F2F4F8;
         border-bottom: 1px solid #F2F4F8;
+        padding: 30px;
+        .title{
+          height: 64px;
+          line-height: 40px;
+          color: #1A173B;
+          border-bottom: 1px solid #E0E6ED;
+          .title-icon{
+            display: block;
+            float: left;
+            margin-right: 12px
+          }
+          .title-name{
+            float: left;
+          }
+        }
+        .form{
+          .form-item{
+            height: 64px;
+            border-bottom: 1px solid #E0E6ED;
+            .form-item-name{
+              float: left;
+              height: 63px;
+              line-height: 63px;
+            }
+            .form-item-input{
+              width: 100px;
+              float: right;
+              margin-top: 16px;
+              font-size: 12px;
+            }
+            .radio{
+              float: right;
+              margin-top: 23px;
+            }
+          }
+        }
+        .form-item-btn{
+          width: 100%!important;
+          margin-left: 0px!important;
+          margin-top: 32px;
+        }
       }
     }
   }

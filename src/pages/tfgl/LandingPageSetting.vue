@@ -115,11 +115,12 @@
                 <td :title="istitle(item.updateOperName)">{{item.updateOperName}}</td>
                 <td>
                   <span class="ctrl">预览</span>
-                  <span class="ctrl">检测</span>
+                  <span class="ctrl" v-if="filters.status==='0'">检测</span>
+                  <span class="ctrl" v-if="filters.status==='1'">编辑</span>
                   <span class="ctrl" v-if="filters.status==='0'" @click="handleUpdateStatus(item)">下架</span>
-                  <span class="ctrl" v-if="filters.status==='1'" @click="handleUpdateStatus(item)">上架</span>
+                  <span class="ctrl" v-if="filters.status==='1'" @click="handleUpdateStatus(item)">发布</span>
                   <span class="ctrl">复制链接</span>
-                  <span class="ctrl">数据</span>
+                  <span class="ctrl" v-if="filters.status==='0'">数据</span>
                 </td>
               </tr>
             </tbody>
