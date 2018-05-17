@@ -3,7 +3,7 @@
 
     <el-col :span="24" class="toolbar clearfix">
       <!--步骤条-->
-      <crm-steps :steps="settingSteps" :active="settingStepsActive" :stepsClass="'mb30'"></crm-steps>
+      <crm-steps :steps="settingSteps" :active="settingStepsActive" ></crm-steps>
       <!--步骤1-->
       <div id="step1" class="clearfix" v-if="step1Show">
         <el-form :model="steps1" :size="'small'" label-width="100px">
@@ -45,7 +45,7 @@
           </el-form-item>
           <span class="tips">指落地页在网页名称或分享后显示的链接标题</span>
         </el-form>
-        <div class="warning-zone" v-if="steps1Warining">
+        <div class="warning-zone" v-if="step1Warining">
           <div class="warning-item clearfix">
             <div class="warning-wrap" v-if="steps1.pageName =='' ">
               <div class="warning-icon">!</div>
@@ -177,8 +177,172 @@
         </div>
       </div>
       <!--步骤3-->
-      <div id="step3">
+      <div id="step3" v-if="step3Show">
+        <!--头图设置-->
+        <div id="banner-setting" v-if="false">
+          <div class="title">编辑内容</div>
+          <div class="content clearfix">
+            <div class="label left" >上传图片</div>
+            <div class="img-upload right">
+              <el-upload
+                action="https://jsonplaceholder.typicode.com/posts/"
+                list-type="picture-card"
+                drag
+                :on-success="uploadSuccess"
+                :limit="3"
+                :file-list="fileList"
+                :on-preview="handlePictureCardPreview"
+                :on-remove="handleRemove"
+              >
+                <i class="el-icon-plus"></i>
+                <div class="el-upload__text"><em>上传</em> 或 <em>拖动</em> 添加图片
+                  </div>
+                <div
+                  class="el-upload__tip"
+                  slot="tip"
+                  style="width: 360px;color: #9FA9BA;margin-top: 20px"
+                  @click="c"
+                >最多三张；支持jpg,png,jpeg,gif；大小不超过600k；建议上传1920px*500px分辨率图片；</div>
+              </el-upload>
+              <el-dialog :visible.sync="dialogVisible">
+                <img width="100%" :src="dialogImageUrl" alt="">
+              </el-dialog>
+            </div>
+          </div>
+        </div>
+        <!--标签模块设置-->
+        <div id="label-setting">
+          <div class="content">
+            <!--样式库列表-->
+            <div class="styel-list left">
+              <div class="style-list-ltem">
+                <div class="title">图文样式</div>
+                <div class="list">
+                  <div class="list-item"></div>
+                  <div class="list-item"></div>
+                  <div class="list-item"></div>
+                  <div class="list-item"></div>
+                  <div class="list-item"></div>
+                </div>
+              </div>
+              <div class="style-list-ltem">
+                <div class="title">图片样式</div>
+                <div class="list">
+                  <div class="list-item"></div>
+                  <div class="list-item"></div>
+                  <div class="list-item"></div>
+                  <div class="list-item"></div>
+                  <div class="list-item"></div>
+                </div>
+              </div>
+              <div class="style-list-ltem">
+                <div class="title">文字样式</div>
+                <div class="list">
+                  <div class="list-item"></div>
+                  <div class="list-item"></div>
+                  <div class="list-item"></div>
+                  <div class="list-item"></div>
+                  <div class="list-item"></div>
+                </div>
+              </div>
+            </div>
+            <!--表单-->
+            <div class="from-list middle">
+              <div class="clearfix">
+                <el-col :span="24" class="toolbar">
+                  <el-radio-group v-model="step3.status" :size="'small'" @change="step3GetStatus">
+                    <el-radio-button label="0" >样式库模式</el-radio-button>
+                    <el-radio-button label="1" >编辑器模式</el-radio-button>
+                  </el-radio-group>
+                </el-col>
+              </div>
+              <div class="title">编辑内容</div>
+              <div>
+                <el-form :model="step3" :size="'small'" label-width="80px">
+                  <el-form-item label="上传图片">
+                    <el-upload
+                      class="avatar-uploader"
+                      action="https://jsonplaceholder.typicode.com/posts/"
+                      drag
+                      :show-file-list="false"
+                      :on-success="handleAvatarSuccess"
+                      :before-upload="beforeAvatarUpload"
+                      :on-remove="handleRemove"
+                    >
+                      <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                      <div v-else>
+                        <i class="el-icon-plus avatar-uploader-icon"></i>
+                        <div class="el-upload__text"><em>上传</em> 或 <em>拖动</em> 添加图片</div>
+                      </div>
+                    </el-upload>
+                    <el-upload
+                      class="avatar-uploader"
+                      action="https://jsonplaceholder.typicode.com/posts/"
+                      drag
+                      :show-file-list="false"
+                      :on-success="handleAvatarSuccess"
+                      :before-upload="beforeAvatarUpload"
+                      :on-remove="handleRemove"
+                    >
+                      <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                      <div v-else>
+                        <i class="el-icon-plus avatar-uploader-icon"></i>
+                        <div class="el-upload__text"><em>上传</em> 或 <em>拖动</em> 添加图片</div>
+                      </div>
 
+                    </el-upload>
+                    <el-upload
+                      class="avatar-uploader"
+                      action="https://jsonplaceholder.typicode.com/posts/"
+                      drag
+                      :show-file-list="false"
+                      :on-success="handleAvatarSuccess"
+                      :before-upload="beforeAvatarUpload"
+                      :on-remove="handleRemove"
+                    >
+                      <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                      <div v-else>
+                        <i class="el-icon-plus avatar-uploader-icon"></i>
+                        <div class="el-upload__text"><em>上传</em> 或 <em>拖动</em> 添加图片</div>
+                      </div>
+
+                    </el-upload>
+                    <el-upload
+                      class="avatar-uploader"
+                      action="https://jsonplaceholder.typicode.com/posts/"
+                      drag
+                      :show-file-list="false"
+                      :on-success="handleAvatarSuccess"
+                      :before-upload="beforeAvatarUpload"
+                      :on-remove="handleRemove"
+                    >
+                      <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                      <div v-else>
+                        <i class="el-icon-plus avatar-uploader-icon"></i>
+                        <div class="el-upload__text"><em>上传</em> 或 <em>拖动</em> 添加图片</div>
+                      </div>
+
+                    </el-upload>
+                  </el-form-item>
+                  <el-form-item label="文章标题">
+                    <el-input v-model="step3.pageName" placeholder="输入落地页名称" maxlength="32"></el-input>
+                  </el-form-item>
+                  <el-form-item label="副标题">
+                    <el-input v-model="step3.label"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+
+            </div>
+            <!--展示图片-->
+            <div class="pic-list right">
+              <div class="title">当前样式</div>
+              <div class="style-img">
+                <img src="../../assets/example.png" width="388" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </el-col>
     <el-col :span="24">
@@ -233,8 +397,8 @@
 
           //步骤先是标识
           step1Show:false,
-          step2Show:true,
-          step3Show:false,
+          step2Show:false,
+          step3Show:true,
 
           //步骤1
           steps1:{
@@ -254,7 +418,7 @@
           projectList:[],
           //step1保存标识
           step1Save:false,
-          steps1Warining:false,
+          step1Warining:false,
           step1SaveObject:{},
 
           //步骤二
@@ -276,7 +440,19 @@
           step2params:[],
           //按钮
           step2BtnActive:"",
-          navVisibility:1
+          navVisibility:1,
+
+          //步骤3
+          step3:{
+            status:0,
+            pageName:"",
+            label:""
+          },
+          dialogImageUrl: '',
+          dialogVisible: false,
+          //头图img列表
+          fileList:[],
+          imageUrl:""
         }
       },
       watch:{
@@ -287,7 +463,10 @@
           console.log(this.step2.label)
         },
         b(){
-          console.log(this.step2BtnRadio)
+          console.log(this.navVisibility)
+        },
+        c(){
+          console.log(this.fileList)
         },
         //获取模板标签/插件
         getLabel(templateId){
@@ -351,7 +530,7 @@
             let id = this.projectList.find(item => item.projectName == this.steps1.projectName).id
             this.steps1.projectCode = id
           }
-          this.steps1Warining = true
+          this.step1Warining = true
           let valArray = Object.values(this.steps1).slice(0,5)
           console.log(valArray)
           if(valArray.includes("")){
@@ -422,6 +601,40 @@
           }else{
             this.step2BtnActive = name
           }
+        },
+
+        //第三步
+        //头图：上传图片
+        handleRemove(file, fileList) {
+          console.log(file, fileList);
+        },
+        handlePictureCardPreview(file) {
+          this.dialogImageUrl = file.url;
+          this.dialogVisible = true;
+        },
+        uploadSuccess(response, file, fileList) {
+          console.log(response,file,fileList)
+        },
+        //label编辑切换模式
+        step3GetStatus(){
+
+        },
+
+        //样式库图片上传
+        handleAvatarSuccess(res, file) {
+          this.imageUrl = URL.createObjectURL(file.raw);
+        },
+        beforeAvatarUpload(file) {
+          const isJPG = file.type === 'image/jpeg'||file.type === 'image/png';
+          const isLt2M = file.size / 1024 / 1024 < 2;
+
+          if (!isJPG) {
+            this.$message.error('上传头像图片只能是 JPG,PNG 格式!');
+          }
+          if (!isLt2M) {
+            this.$message.error('上传头像图片大小不能超过 500k!');
+          }
+          return isJPG && isLt2M;
         }
       },
       mounted() {
@@ -437,7 +650,9 @@
   }
   .el-button{width: 100px;margin-left: 10px}
   .mb30{margin-bottom: 30px}
+
   #step1{
+    margin-top: 30px;
     margin-bottom: 250px;
     .el-form {
       float: left;
@@ -515,6 +730,7 @@
     }
   }
   #step2{
+    margin-top: 30px;
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid #F2F4F8;
@@ -686,6 +902,74 @@
         }
       }
     }
+  }
+  #step3{
+    .title{
+      margin-bottom: 20px;
+      color: #1A173B;
+      font-size: 16px;
+    }
+    #banner-setting{
+      .label{
+        float: left;
+        width: 80px;
+        color: #8A96A0;
+      }
+      .img-upload{
+        float: left;
+        .el-upload-dragger .el-upload__text{
+          position: absolute;
+          top: -20px;
+          width: 100%;
+        }
+      }
+
+    }
+    #label-setting{
+      min-height: 400px;
+      border-bottom: 1px solid #F2F4F8;
+      .content{
+        display: flex;
+        .styel-list{
+          min-height: 400px;
+          width: 375px;
+          border-right: 1px solid #EFF2F6;
+          padding-top: 30px;
+          .style-list-ltem{
+            .list{
+              width: 352px;
+              display: flex;
+              flex-wrap: wrap;
+              margin-bottom: 32px;
+              .list-item{
+                width: 80px;
+                height: 106px;
+                margin-right: 8px;
+                margin-bottom: 8px;
+                background-image: url('../../assets/example.png');
+              }
+            }
+          }
+
+        }
+        .from-list{
+          width: 586px;
+          min-height: 400px;
+          padding: 30px;
+          border-right:1px solid #F2F4F8;
+          margin-right: 30px;
+          .el-form-item{
+            margin-bottom: 20px;
+          }
+        }
+        .pic-list{
+          padding-top: 30px;
+          width: 388px;
+          min-height: 400px;
+        }
+      }
+    }
+
   }
 </style>
 
