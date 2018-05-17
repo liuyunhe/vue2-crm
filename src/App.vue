@@ -487,5 +487,82 @@ export default {
       font-weight: normal;
     }
   }
+  //上传图片
+  #banner-setting{
+    .el-upload--picture-card{
+      width: 320px!important;
+      height:84px!important;
+      border: none;
+    }
+    .el-upload-dragger{
+      width:320px!important;
+      height:84px!important;
+    }
+    .el-upload-list--picture-card .el-upload-list__item{
+      width:320px!important;
+      height:84px!important;
+      display: block!important;
+      margin-bottom: 24px;
+    }
+    .el-upload-list--picture-card .el-progress{
+      width: 60px!important;
+      .el-progress-circle{
+        width: 60px!important;
+        height: 60px!important;
+      }
+    }
+    .el-upload--picture-card i{
+      font-size: 22px;
+      position: absolute;
+      top: 16px;
+      margin-left: -11px;
+    }
+  }
+  #label-setting{
+    .el-form-item__label{
+      text-align: left!important;
+    }
+    .el-input--small .el-input__inner{
+      width: 332px;
+    }
+    .el-form-item{
+      .avatar-uploader{
+        width: 160px;
+        float: left;
+        padding-top: 8px;
+        height: 92px;
+        &:nth-child(2n){
+          margin-left: 12px;
+        }
+        .el-upload {
+          border-radius: 6px;
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+          width: 160px;
+          height: 84px;
+        }
+      }
+      .avatar {
+        width: 160px;
+        height: 84px;
+        display: block;
+      }
+      .el-upload-dragger{
+        width:160px!important;
+        height:84px!important;
+        .avatar-uploader-icon{
+        position: absolute;
+        font-size: 16px;
+        margin-left: -8px;
+        top: 20px;
+        }
+        .el-upload__text{
+          margin-top: 40px;
+          font-size: 12px;
+        }
+      }
+    }
+  }
 
 </style>
