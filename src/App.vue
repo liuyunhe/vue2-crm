@@ -119,9 +119,9 @@ export default {
       padding: 0!important;
     }
     .popper__arrow{
-      display: none;
+      display: none!important;
       &::after{
-        display: none;
+        display: none!important;
       }
     }
   }
@@ -229,6 +229,7 @@ export default {
     }
     .el-form-item__label{
       color: #8A96A0!important;
+      text-align: left!important;
     }
   }
   //底部工具条
@@ -525,6 +526,10 @@ export default {
     .el-input--small .el-input__inner{
       width: 332px;
     }
+    .el-textarea__inner{
+      width: 332px;
+      height: 160px;
+    }
     .el-form-item{
       .avatar-uploader{
         width: 160px;
@@ -564,5 +569,18 @@ export default {
       }
     }
   }
+  #plugin-setting{
+    .el-form-item{
+      .el-icon-delete:before{
+        color: #0077ff!important;
+      }
+      .el-icon-plus:before{
+        color: #0077ff!important;
+      }
+    }
+  }
 
+  .ql-container{
+    min-height: 400px;
+  }
 </style>
