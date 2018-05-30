@@ -15,9 +15,9 @@ import './assets/theme/theme-crm/index.css'
 import ElementUI from 'element-ui';
 //引入api配置文件
 import api from './api/api'
+
 // import Mock from './mock'
 // Mock.bootstrap();
-
 
 Vue.config.productionTip = false
 
