@@ -33,7 +33,7 @@
           <div class="mask">
             <div class="mask-layer"></div>
             <div class="ctrl">
-              <div class="btn browse">浏 览</div>
+              <div class="btn browse" @click="previewTemplate(item)">浏 览</div>
               <div class="btn use" @click="useTemplate(item)">应 用</div>
             </div>
           </div>
@@ -48,6 +48,7 @@
 <script>
     import multiplyChooser from '../../components/base/multiplyChooser.vue'
     import _ from 'lodash'
+    import { URL_ROOT } from '../../common/js/types'
     export default {
       components:{
         multiplyChooser
@@ -162,11 +163,14 @@
           this.getTemplateList(this.requestparams)
         },
         getTemplateList(params) {
-          this.$api.requstTemplateList(params).then(res => {
+          this.$api.requestTemplateList(params).then(res => {
             this.templateList = res.data.list
           }).catch(err => {
 
           })
+        },
+        previewTemplate(item){
+          window.open(`${URL_ROOT+item.tmpPage}`)
         },
         useTemplate(item){
           this.$store.commit('setLandingPageType', item.uuid)
