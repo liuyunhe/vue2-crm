@@ -156,7 +156,7 @@ export default {
     }
   }
   .breadcrumb-container {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     .title {
       width: 200px;
       float: left;
@@ -218,7 +218,7 @@ export default {
 }
   //工具条
   .toolbar {
-    margin-bottom: 15px;
+    margin-bottom: 30px;
     .el-form-item {
       margin-bottom: 0px;
       margin-right: 20px;
@@ -565,6 +565,38 @@ export default {
         .el-upload__text{
           margin-top: 40px;
           font-size: 12px;
+        }
+      }
+      .drag{
+        .el-upload--picture-card{
+          width: 160px!important;
+          height:84px!important;
+          border: none;
+        }
+        .el-upload-list--picture-card .el-upload-list__item{
+          width:160px!important;
+          height:84px!important;
+          display: block!important;
+          margin-bottom: 24px;
+        }
+        .el-upload--picture-card i{
+          font-size: 22px;
+          position: absolute;
+          top: 16px;
+          margin-left: -11px;
+        }
+        .el-upload-list--picture-card .el-progress{
+          width: 60px!important;
+          .el-progress-circle{
+            width: 60px!important;
+            height: 60px!important;
+          }
+        }
+        .el-upload-dragger .el-upload__text{
+          position: absolute;
+          top: -20px;
+          width: 100%;
+          margin-top: 0px;
         }
       }
     }
