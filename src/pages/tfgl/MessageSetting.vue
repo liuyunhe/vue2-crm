@@ -3,7 +3,19 @@
 
     <el-col :span="24" class="toolbar clearfix">
       <!--步骤条-->
-      <crm-steps :steps="settingSteps" :active="settingStepsActive" ></crm-steps>
+      <div style="display: flex">
+        <!--step1-->
+
+        <!--step2-->
+        <!--step3-->
+        <div class="backBtn" v-if="settingStepsActive===2&&step2ActiveTpye==='banner'" @click="step3BnnerCancel()"></div>
+        <div class="backBtn" v-if="settingStepsActive===2&&step2ActiveTpye==='label'&&step3.status == 0" @click="step3LabelCancel()"></div>
+        <div class="backBtn" v-if="settingStepsActive===2&&step2ActiveTpye==='label'&&step3.status == 1" @click="step3EditorCancel()"></div>
+        <div class="backBtn" v-if="settingStepsActive===2&&step2ActiveTpye==='plugin'" @click="step3PluginCancel()"></div>
+
+        <crm-steps :steps="settingSteps" :active="settingStepsActive" ></crm-steps>
+      </div>
+
       <!--步骤1-->
       <div id="step1" class="clearfix" v-if="step1Show">
         <el-form :model="steps1" :size="'small'" label-width="100px">
@@ -12,7 +24,7 @@
             <span class="important">*</span>
           </el-form-item>
           <el-form-item label="所属机构">
-            <el-select v-model="steps1.orgName" placeholder="请选择">
+            <el-select v-model="steps1.orgName" placeholder="请选择" :disabled="steps1.uuid !==''">
               <el-option
                 v-for="item in orgNameList"
                 :key="item"
@@ -21,8 +33,8 @@
             </el-select>
             <span class="important">*</span>
           </el-form-item>
-          <el-form-item label="所属项目">
-            <el-select v-model="steps1.projectName" placeholder="请选择">
+          <el-form-item label="投放项目">
+            <el-select v-model="steps1.projectName" placeholder="请选择" :disabled="steps1.uuid !==''">
               <el-option
                 v-for="(item,index) in projectList"
                 :key="index"
@@ -242,6 +254,12 @@
         </div>
         <!--标签模块设置-->
         <div id="label-setting" v-if="step2ActiveTpye == 'label'">
+
+          <div class="plugin-form-top clearfix" v-show="step3.status == 1">
+            <img :src="`${URL_ROOT}${step2Right.url}`" width="40" alt="">
+            <div class="name">{{ step2Right.name }}设置</div>
+          </div>
+
           <div class="clearfix" style="padding-top: 30px">
             <el-col :span="24" class="toolbar">
               <el-radio-group v-model="step3.status" :size="'small'" @change="step3GetStatus">
@@ -298,7 +316,7 @@
 
               <div class="title">编辑内容</div>
               <div>
-                <el-form :model="step3" :size="'small'" label-width="80px">
+                <el-form :model="step3" :size="'small'" label-width="80px" ref="styleForm">
                   <template v-for="(item,index) in activeFormList">
                     <!--图片1-->
                     <el-form-item :label="item.name" v-if="item.type === 1&&index ===0">
@@ -310,7 +328,6 @@
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess0"
                         :before-upload="beforeAvatarUpload0"
-                        :on-remove="handleRemove"
                       >
                         <img v-if="imageUrl0" :src="imageUrl0" class="avatar">
                         <div v-else>
@@ -329,7 +346,6 @@
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess1"
                         :before-upload="beforeAvatarUpload1"
-                        :on-remove="handleRemove"
                       >
                         <img v-if="imageUrl1" :src="imageUrl1" class="avatar">
                         <div v-else>
@@ -348,7 +364,6 @@
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess2"
                         :before-upload="beforeAvatarUpload2"
-                        :on-remove="handleRemove"
                       >
                         <img v-if="imageUrl2" :src="imageUrl2" class="avatar">
                         <div v-else>
@@ -367,7 +382,6 @@
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess3"
                         :before-upload="beforeAvatarUpload3"
-                        :on-remove="handleRemove"
                       >
                         <img v-if="imageUrl3" :src="imageUrl3" class="avatar">
                         <div v-else>
@@ -386,7 +400,6 @@
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess4"
                         :before-upload="beforeAvatarUpload4"
-                        :on-remove="handleRemove"
                       >
                         <img v-if="imageUrl4" :src="imageUrl4" class="avatar">
                         <div v-else>
@@ -405,7 +418,6 @@
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess5"
                         :before-upload="beforeAvatarUpload5"
-                        :on-remove="handleRemove"
                       >
                         <img v-if="imageUrl5" :src="imageUrl5" class="avatar">
                         <div v-else>
@@ -424,7 +436,6 @@
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess6"
                         :before-upload="beforeAvatarUpload6"
-                        :on-remove="handleRemove"
                       >
                         <img v-if="imageUrl6" :src="imageUrl6" class="avatar">
                         <div v-else>
@@ -443,7 +454,6 @@
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess9"
                         :before-upload="beforeAvatarUpload9"
-                        :on-remove="handleRemove"
                       >
                         <img v-if="imageUrl9" :src="imageUrl9" class="avatar">
                         <div v-else>
@@ -462,7 +472,6 @@
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess12"
                         :before-upload="beforeAvatarUpload12"
-                        :on-remove="handleRemove"
                       >
                         <img v-if="imageUrl12" :src="imageUrl12" class="avatar">
                         <div v-else>
@@ -481,7 +490,6 @@
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess15"
                         :before-upload="beforeAvatarUpload15"
-                        :on-remove="handleRemove"
                       >
                         <img v-if="imageUrl15" :src="imageUrl15" class="avatar">
                         <div v-else>
@@ -491,12 +499,37 @@
                       </el-upload>
                     </el-form-item>
 
-
                     <el-form-item :label="item.name" v-if="item.type === 2">
                       <el-input v-model="item.value" :placeholder="item.tips" maxlength="32"></el-input>
                     </el-form-item>
+
                     <el-form-item :label="item.name" v-if="item.type === 3">
                       <el-input type="textarea"  v-model="item.value" resize="none"></el-input>
+                    </el-form-item>
+
+                    <el-form-item :label="item.name" v-if="item.type === 4">
+                      <div class="drag">
+                        <el-upload
+                          :action="IMG_UPLOAD"
+                          list-type="picture-card"
+                          drag
+                          :limit="9"
+                          :on-success="uploadSuccessStyle"
+                          :file-list="item.value"
+                          :on-remove="handleRemoveStyle"
+                          :before-upload="beforeUploadBanner"
+                          :disabled="uploadDisabled"
+                        >
+                          <i class="el-icon-plus"></i>
+                          <div class="el-upload__text"><em>上传</em> 或 <em>拖动</em> 添加图片
+                          </div>
+                          <div
+                            class="el-upload__tip"
+                            slot="tip"
+                            style="width: 360px;color: #9FA9BA;margin-top: 20px"
+                          >最多三张；支持jpg,png,jpeg,gif；大小不超过600k；建议上传1920px*500px分辨率图片；</div>
+                        </el-upload>
+                      </div>
                     </el-form-item>
                   </template>
                 </el-form>
@@ -595,37 +628,41 @@
     </el-col>
     <el-col :span="24">
       <el-button type="primary" size="small fr" v-if="settingStepsActive===0" @click="nextStep()">下一步</el-button>
-      <el-button size="small fr" class="important" v-if="settingStepsActive===0" @click="saveStep1('确定保存当前编辑内容？',true)">保存</el-button>
+      <el-button size="small fr" class="important" v-if="settingStepsActive===0" @click="saveStep1('确定保存当前编辑内容？',true)" :disabled="saveDisabled">保存</el-button>
       <el-button size="small fr" v-if="settingStepsActive===0">预览</el-button>
-      <el-button size="small fr" v-if="settingStepsActive===0">取消</el-button>
-      <el-button size="small fr" class="important" v-if="settingStepsActive===0">更换模板</el-button>
+      <el-button size="small fr" v-if="settingStepsActive===0" @click="cancelEdit()">取消</el-button>
+      <el-button size="small fr" class="important" v-if="settingStepsActive===0" @click="changeTemplate()">更换模板</el-button>
 
 
       <el-button type="primary" size="small fr" v-if="settingStepsActive===1" @click="lastStep()">上一步</el-button>
-      <el-button size="small fr" class="important" v-if="settingStepsActive===1" @click="saveStep2()">保存</el-button>
-      <el-button size="small fr" v-if="settingStepsActive===1" >发布</el-button>
-      <el-button size="small fr" v-if="settingStepsActive===1">预览</el-button>
-      <el-button size="small fr" v-if="settingStepsActive===1">取消</el-button>
+      <el-button size="small fr" class="important" v-if="settingStepsActive===1" @click="saveStep2()" :disabled="saveDisabled">保存</el-button>
+      <el-button size="small fr" v-if="settingStepsActive===1" @click="saveStep2('publish')">发布</el-button>
+      <el-button size="small fr" v-if="settingStepsActive===1" @click="saveStep2('preview')">预览</el-button>
+      <el-button size="small fr" v-if="settingStepsActive===1" @click="cancelStep2()">取消</el-button>
 
       <!--banner图按钮-->
-      <el-button type="primary" size="small fr" v-if="settingStepsActive===2&&step2ActiveTpye==='banner'" @click="saveStep3Banner()">保存111</el-button>
+      <el-button type="primary" size="small fr" v-if="settingStepsActive===2&&step2ActiveTpye==='banner'" @click="saveStep3Banner()" :disabled="saveDisabled">保存</el-button>
       <el-button size="small fr" class="important" v-if="settingStepsActive===2&&step2ActiveTpye==='banner'" @click="bbb()">重置</el-button>
-      <el-button size="small fr" v-if="settingStepsActive===2&&step2ActiveTpye==='banner'" @click="step3Cancel()">取消</el-button>
+      <!--<el-button size="small fr" v-if="settingStepsActive===2&&step2ActiveTpye==='banner'" @click="step3BnnerCancel()">取消</el-button>-->
+      <el-button size="small fr" v-if="settingStepsActive===2&&step2ActiveTpye==='banner'" @click="saveStep3Banner('preview')">预览</el-button>
 
       <!--样式库按钮-->
-      <el-button type="primary" size="small fr" v-if="settingStepsActive===2&&step2ActiveTpye==='label'&&step3.status == 0" @click="saveStep3Label()">保存</el-button>
+      <el-button type="primary" size="small fr" v-if="settingStepsActive===2&&step2ActiveTpye==='label'&&step3.status == 0" @click="saveStep3Label()" :disabled="saveDisabled">保存</el-button>
       <el-button size="small fr" class="important" v-if="settingStepsActive===2&&step2ActiveTpye==='label'&&step3.status == 0" @click="resetStyle()">重置</el-button>
-      <el-button size="small fr" v-if="settingStepsActive===2&&step2ActiveTpye==='label'&&step3.status == 0" @click="step3Cancel()">取消</el-button>
+      <!--<el-button size="small fr" v-if="settingStepsActive===2&&step2ActiveTpye==='label'&&step3.status == 0" @click="step3LabelCancel()">取消</el-button>-->
+      <el-button size="small fr" v-if="settingStepsActive===2&&step2ActiveTpye==='label'&&step3.status == 0" @click="saveStep3Label('preview')">预览</el-button>
 
       <!--编辑器按钮-->
-      <el-button type="primary" size="small fr" v-if="settingStepsActive===2&&step2ActiveTpye==='label'&&step3.status == 1" @click="saveStep3Editor()">保存</el-button>
+      <el-button type="primary" size="small fr" v-if="settingStepsActive===2&&step2ActiveTpye==='label'&&step3.status == 1" @click="saveStep3Editor()" :disabled="saveDisabled">保存</el-button>
       <el-button size="small fr" class="important" v-if="settingStepsActive===2&&step2ActiveTpye==='label'&&step3.status == 1" @click="resetEditor()">重置</el-button>
-      <el-button size="small fr" v-if="settingStepsActive===2&&step2ActiveTpye==='label'&&step3.status == 1" @click="step3Cancel()">取消</el-button>
+      <!--<el-button size="small fr" v-if="settingStepsActive===2&&step2ActiveTpye==='label'&&step3.status == 1" @click="step3EditorCancel()">取消</el-button>-->
+      <el-button size="small fr" v-if="settingStepsActive===2&&step2ActiveTpye==='label'&&step3.status == 1" @click="saveStep3Editor('preview')">预览</el-button>
 
       <!--插件按钮-->
-      <el-button type="primary" size="small fr" v-if="settingStepsActive===2&&step2ActiveTpye==='plugin'" @click="saveStep3Plugin()">保存</el-button>
+      <el-button type="primary" size="small fr" v-if="settingStepsActive===2&&step2ActiveTpye==='plugin'" @click="saveStep3Plugin()" :disabled="saveDisabled">保存</el-button>
       <el-button size="small fr" class="important" v-if="settingStepsActive===2&&step2ActiveTpye==='plugin'" @click="ccc()">重置</el-button>
-      <el-button size="small fr" v-if="settingStepsActive===2&&step2ActiveTpye==='plugin'" @click="step3Cancel()">取消</el-button>
+      <!--<el-button size="small fr" v-if="settingStepsActive===2&&step2ActiveTpye==='plugin'" @click="step3PluginCancel()">取消</el-button>-->
+      <el-button size="small fr" v-if="settingStepsActive===2&&step2ActiveTpye==='plugin'" @click="saveStep3Plugin('preview')">预览</el-button>
 
 
 
@@ -639,8 +676,10 @@
     import draggable from 'vuedraggable'
     import crmSteps from '../../components/base/crmSteps.vue'
     import crmEditor from '../../components/base/crmEditor.vue'
+    import ElFormItem from "../../../node_modules/element-ui/packages/form/src/form-item.vue";
     export default {
       components:{
+        ElFormItem,
         crmSteps,
         crmEditor,
         draggable,
@@ -686,7 +725,8 @@
           step1Show:true,
           step2Show:false,
           step3Show:false,
-
+          //按钮禁用
+          saveDisabled:false,
 
           //步骤1
           steps1:{
@@ -724,7 +764,7 @@
             label:[],
             plugins:[]
           },
-
+          copystep2:"",
           //功能
           //添加label弹窗
           step2DialogLabel:[],
@@ -761,6 +801,7 @@
           //头图img列表
           uploadDisabled:false,
           bannerFileList:[],
+          copyBannerFileList:[],
           //上传结果ID
           uploadresultList:[],
           //样式库上传图片
@@ -789,32 +830,90 @@
           //当前选中样式库
           step3ActiveStyleId:"",
           activeFormList:[],
+          copyActiveFormList:"",
+
+
 
           //编辑器内容
           editorContent:"",
+          copyEditorContent:"",
           //插件表单
           pluginForm:[
             {"value":"0"},
             {"value":"0"},
-            {"value":"","value1":"","value2":""},
+            {"value":"","value1":"0","value2":"0"},
             {"value":"立即提交"},
             {"value":"#0077FF"},
             {"value":"0"},
             {"value":"0"},
-            {"value":[]},
+            {"value":["周一","周二","周三","周四","周五","周六","周日"]},
             {"value":"0"},
             {"value":"0"},
             [{"value":"两房一厅一卫"},{"value":"两房一厅一卫"}],
           ],
-
+          resetPluginForm:JSON.stringify([
+            {"value":"0"},
+            {"value":"0"},
+            {"value":"","value1":"0","value2":"0"},
+            {"value":"立即提交"},
+            {"value":"#0077FF"},
+            {"value":"0"},
+            {"value":"0"},
+            {"value":["周一","周二","周三","周四","周五","周六","周日"]},
+            {"value":"0"},
+            {"value":"0"},
+            [{"value":"两房一厅一卫"},{"value":"两房一厅一卫"}],
+          ]),
+          copyPluginForm:JSON.stringify([
+            {"value":"0"},
+            {"value":"0"},
+            {"value":"","value1":"0","value2":"0"},
+            {"value":"立即提交"},
+            {"value":"#0077FF"},
+            {"value":"0"},
+            {"value":"0"},
+            {"value":["周一","周二","周三","周四","周五","周六","周日"]},
+            {"value":"0"},
+            {"value":"0"},
+            [{"value":"两房一厅一卫"},{"value":"两房一厅一卫"}],
+          ]),
         }
       },
       watch:{
-
+        pluginForm(val){
+          this.pluginForm = val
+        }
       },
       methods:{
-        bbb(){},
-        ccc(){},
+        changeTemplate(){
+          this.$confirm('确定使用新模板？ 使用新模板将造成原先的标签模块消失？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$router.push({path:'/SelectLandingPageTemplate'})
+          }).catch(() => {
+
+          });
+        },
+        cancelEdit(){
+          this.$confirm('确定放弃当前落地页的编辑？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$router.push({path:'/LandingPageSetting'})
+          }).catch(() => {
+
+          });
+        },
+        bbb(){
+          this.bannerFileList = []
+        },
+        ccc(){
+          console.log(JSON.parse(this.resetPluginForm))
+          this.pluginForm = JSON.parse(this.resetPluginForm)
+        },
         b(){
           console.log(this.navVisibility)
         },
@@ -822,8 +921,8 @@
         //获取模板标签/插件
         getLabel(templateId){
           if(this.steps1.uuid){
-            this.$api.requstEditorMessage(this.$store.getters.getLandingPageId).then(res=>{
-              console.log(res)
+            this.$api.requestEditorMessage(this.$store.getters.getLandingPageId).then(res=>{
+              console.log("requestEditorMessage",res)
               if(res.code == 1){
                 //step1
                 this.steps1.pageName = res.data.pageName
@@ -835,7 +934,7 @@
                 this.callTel2 = res.data.callTel.split(",")[1]
                 //step2banner
                 this.step2.basic[0].resultList = res.data.pics
-                console.log(this.step2.basic[0].resultList)
+//                console.log(this.step2.basic[0].resultList)
                 let arr = _.map(this.step2.basic[0].resultList,obj=>{
                   if(obj.value){
                     return {
@@ -850,7 +949,10 @@
                 this.bannerFileList = arr.filter((obj,idx)=>{
                   return obj.url!==""
                 })
-                console.log(this.bannerFileList)
+                this.copyBannerFileList = Array.from(this.bannerFileList)
+
+
+
                 //step2label
                 this.step2.label = _.map(res.data.labels,(obj,index)=>{
                   if(obj.fields){
@@ -858,9 +960,13 @@
                     obj.resultList = obj.fields
                     obj.saveId = obj.id
                     obj.id = obj.labelId
+                  }else{
+                    obj.saveId = obj.id
+                    obj.id = obj.labelId
                   }
                   return obj
                 })
+                console.log("this.step2.label",this.step2.label)
                 let plugin = res.data.plugins[0]
 
                 this.$api.requestLabelList(templateId).then(res =>{
@@ -877,7 +983,7 @@
                         }
                       }
                     }
-                    
+
                     this.step2.plugins = res.data.plugins
                     this.step2.plugins[0].resultList = plugin.fields
                     this.step2.plugins[0].id = plugin.labelId
@@ -885,7 +991,7 @@
                     this.step2.plugins[0].htmlId = plugin.htmlId
 
                     console.log(this.pluginForm[0].value)
-
+                    this.copystep2 = JSON.stringify(this.saveStep2)
 
                   }
                 }).catch(err=>{
@@ -914,6 +1020,7 @@
                   this.pluginForm[9].value = this.step2.plugins[0].resultList[9].value
                   this.pluginForm[10] = list
                   console.log(this.pluginForm)
+                  this.copyPluginForm = JSON.stringify(this.pluginForm)
                 })
               }
             })
@@ -1034,6 +1141,12 @@
                         this.step2Show = true
                       }
                       this.step1SaveObject = Object.assign({},this.steps1)
+                    }else{
+                      let message = res.message
+                      this.$message({
+                        message,
+                        type: 'warning'
+                      });
                     }
                   }).catch(err =>{
 
@@ -1108,34 +1221,56 @@
         },
         //第二步编辑label
         editStyle(){
+          this.saveStep2("next")
+
           console.log(this.step2.label[this.step2Right.idx])
           this.step2ActiveId = this.step2Right.id
           let resultList = this.step2.label[this.step2Right.idx].resultList
           let html = this.step2.label[this.step2Right.idx].html
-
+          let type = resultList?resultList[0].type:""
+          console.log('resultList',resultList,type)
           if(resultList){
             this.step3.status = 0
             this.step3ActiveStyleId = resultList[0].styleId
+
             this.$api.requestStyleId(this.step3ActiveStyleId).then(res =>{
               if(res.code === 1){
-                this.activeFormList = res.data
-                let _this = this
-                let array = this.activeFormList.map(function (obj,index) {
-                  obj.value = resultList[index].value
-                  obj.formId = resultList[index].id
-                  if(obj.type === 1){
-                    _this["imageUrl"+index] = obj.value
-                  }
-                  return obj
-                })
-                this.activeFormList = array
-                console.log(this.activeFormList)
+                if(type ==4){
+                  this.activeFormList = res.data
+                  let _this = this
+                  this.activeFormList[0].value = resultList.map((obj,index)=>{
+                    obj.url = obj.value
+                    obj.formId = obj.id
+                    return obj
+                  })
+                  this.activeFormList[0].value = this.activeFormList[0].value.filter((item)=>{
+                    return item.url!== undefined
+                  })
+                  console.log(this.activeFormList)
+                  this.copyActiveFormList = JSON.stringify(this.activeFormList)
+                }
+                else{
+                  this.activeFormList = res.data
+                  let _this = this
+                  let array = this.activeFormList.map(function (obj,index) {
+                    obj.value = resultList[index].value
+                    obj.formId = resultList[index].id
+                    if(obj.type === 1){
+                      _this["imageUrl"+index] = obj.value
+                    }
+                    return obj
+                  })
+                  this.activeFormList = array
+                  this.copyActiveFormList = JSON.stringify(this.activeFormList)
+                  console.log(this.activeFormList)
+                }
               }
             })
           }
           if(html){
             this.step3.status = 1
             this.editorContent = html
+            this.copyEditorContent = JSON.stringify(this.editorContent)
           }else{
             this.editorContent = ""
           }
@@ -1158,9 +1293,55 @@
           this.step2Show = false
           this.step3Show = true
         },
+        //第二步取消
+        cancelStep2(){
+
+          if(this.copystep2!==JSON.stringify(this.step2)){
+            this.$confirm('是否保存当前编辑内容', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              this.saveStep2()
+              this.$router.push({path:'/LandingPageSetting'})
+            }).catch(() => {
+              console.log(JSON.parse(this.copystep2))
+              this.saveStep2 = JSON.parse(this.copystep2)
+              this.$router.push({path:'/LandingPageSetting'})
+            });
+          }else{
+            this.$router.push({path:'/LandingPageSetting'})
+          }
+
+
+        },
+        //第二步发布
+        publishstep2(){
+          this.$api.pagelistUpdateStatus(this.steps1.uuid).then(res=>{
+            if(res.code == 1){
+              this.$message({
+                type: 'success',
+                message: "已上架!"
+              });
+
+            }else{
+              let message = res.message
+              this.$message({
+                message,
+                type: 'warning'
+              });
+            }
+          })
+        },
+        //第二步预览
+        previewStep2(){
+
+          window.open(`${URL_ROOT}/api/private/1.0/page/preview/${this.steps1.uuid}`);
+        },
         //第二步保存按钮
-        saveStep2(){
+        saveStep2(flag){
           console.log(this.step2.label)
+          this.saveStep2Disabled = true
           //label
           let labelParams = _.map(this.step2.label,(obj,index)=>{
             return{
@@ -1190,6 +1371,7 @@
           console.log(params)
           this.$api.saveSettingStep2(params).then(res=>{
             console.log(res)
+            this.saveStep2Disabled = false
             if(res.code === 1){
               res.data.labels.map((obj,index)=>{
                 this.step2.label[index].saveId = obj.id
@@ -1197,6 +1379,33 @@
               res.data.plugins.map((obj,index)=>{
                 this.step2.plugins[index].saveId = obj.id
               })
+              this.copystep2 = JSON.stringify(this.step2)
+              if(!flag){
+                this.$message({
+                  message: '保存成功',
+                  type: 'success'
+                });
+              }
+              if(flag == "preview"){
+                window.open(`${URL_ROOT}/api/private/1.0/page/preview/${this.steps1.uuid}`);
+              }
+              if(flag == "publish"){
+                this.$api.pagelistUpdateStatus(this.steps1.uuid).then(res=>{
+                  if(res.code == 1){
+                    this.$message({
+                      type: 'success',
+                      message: "已上架!"
+                    });
+
+                  }else{
+                    let message = res.message
+                    this.$message({
+                      message,
+                      type: 'warning'
+                    });
+                  }
+                })
+              }
             }
           })
 
@@ -1213,6 +1422,11 @@
           })
           console.log(this.bannerFileList)
         },
+        handleRemoveStyle(file, fileList){
+          this.activeFormList[0].value = fileList.map((obj,index)=>{
+            return {url:obj.url}
+          })
+        },
         handlePictureCardPreview(file) {
           this.dialogImageUrl = file.url;
           this.dialogVisible = true;
@@ -1220,6 +1434,7 @@
         beforeUploadBanner(){
           this.uploadDisabled = true
         },
+
         uploadSuccess(response, file, fileList) {
 
           if(response.code === 1){
@@ -1234,8 +1449,19 @@
 //          console.log(this.bannerFileList)
 
         },
+        uploadSuccessStyle(response, file, fileList){
+          if(response.code === 1){
+            file.url = response.data.fileUrl
+            this.activeFormList[0].value = _.map(fileList,obj=>{
+              return {url:obj.url}
+            })
+            console.log(this.activeFormList)
+          }
+          this.uploadDisabled = false
+        },
         //第三步保存头图
-        saveStep3Banner(){
+        saveStep3Banner(flag){
+          this.saveDisabled = true
           let resultList = this.step2.basic[0].resultList
           let fieldList = []
           for (let i = 0;i<3;i++){
@@ -1254,10 +1480,26 @@
           }
           console.log(params)
           this.$api.saveSettingStep3(params).then(res =>{
+            this.saveDisabled = false
             console.log(res)
             if(res.code === 1){
               this.step2.basic[0].resultList = res.data.resultList
               console.log(this.step2.basic[0].resultList)
+              this.copyBannerFileList = Array.from(this.bannerFileList)
+              if(!flag){
+                this.$message({
+                  message: '保存成功',
+                  type: 'success'
+                });
+              }
+              if(flag == "preview"){
+                this.saveStep2('preview')
+              }
+            }else{
+              this.$message({
+                message: res.message,
+                type: 'warning'
+              });
             }
           })
 
@@ -1272,9 +1514,34 @@
               type: 'warning'
             }).then(() => {
               console.log(item)
-              this.step3ActiveStyleId = item.id
-              this.initialImg()
-              this.getStyleId(item.id)
+              let flag = this.step2.label[this.step2Right.idx].htmlId
+              if(flag) {
+                let parmas = {
+                  "plannInfoId": this.$store.getters.getLandingPageId,
+                  "labelId": this.step2.label[this.step2Right.idx].id,
+                  "styleId": this.step2.label[this.step2Right.idx].styleId ? this.step2.label[this.step2Right.idx].styleId : ""
+                }
+                console.log(parmas)
+                this.$api.requestClearStyle(parmas).then(res=>{
+                  console.log(res)
+                  delete this.step2.label[this.step2Right.idx].resultList
+                  delete this.step2.label[this.step2Right.idx].html
+                  delete this.step2.label[this.step2Right.idx].htmlId
+                  delete this.step2.label[this.step2Right.idx].styleId
+                  console.log("this.step2.label[this.step2Right.idx]",this.step2.label[this.step2Right.idx])
+                  this.activeFormList=[]
+                  this.step3ActiveStyleId = item.id
+                  this.initialImg()
+                  this.getStyleId(item.id)
+                })
+
+              }else{
+                this.step3ActiveStyleId = item.id
+                this.initialImg()
+                this.getStyleId(item.id)
+              }
+
+
             }).catch(() => {
 
             });
@@ -1292,7 +1559,7 @@
           this.$api.requestStyleId(id).then(res =>{
             if(res.code === 1){
               this.activeFormList = res.data
-//              console.log(this.activeFormList)
+              console.log(this.activeFormList)
             }
           })
         },
@@ -1303,19 +1570,34 @@
           }else {
             this.step3.status = 0
           }
-          console.log(this.step2.label[this.step2Right.idx])
+          console.log(this.step2.label)
           this.$confirm('确定放弃当前编辑内容并覆盖样式？', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
             //清空数据
+            let flag = this.step2.label[this.step2Right.idx].htmlId
+            if(flag) {
+              let parmas = {
+                "plannInfoId": this.$store.getters.getLandingPageId,
+                "labelId": this.step2.label[this.step2Right.idx].id,
+                "styleId": this.step2.label[this.step2Right.idx].styleId ? this.step2.label[this.step2Right.idx].styleId : ""
+              }
+              console.log(parmas)
+              this.$api.requestClearStyle(parmas).then(res => {
+                console.log(res)
+
+              })
+            }
             delete this.step2.label[this.step2Right.idx].resultList
             delete this.step2.label[this.step2Right.idx].html
+            delete this.step2.label[this.step2Right.idx].htmlId
+            delete this.step2.label[this.step2Right.idx].styleId
+            console.log("this.step2.label[this.step2Right.idx]",this.step2.label[this.step2Right.idx])
             this.editorContent=""
             this.step3ActiveStyleId=""
             this.activeFormList=[]
-
             this.step3.status = value
 
           }).catch(() => {
@@ -1624,17 +1906,40 @@
         },
 
         //第三步保存Label
-        saveStep3Label(){
-          console.log(this.activeFormList)
-          let fieldList = _.map(this.activeFormList,(item,idx)=>{
+        saveStep3Label(flag){
+          this.saveDisabled = true
+          let fieldList
+          if(this.activeFormList[0].type == 4){
+            fieldList = []
+            let resultList = this.step2.label[this.step2Right.idx].resultList
+            for(let i = 0;i<9;i++){
+              fieldList.push({
+                "styleFieldId":this.activeFormList[0].id,
+                "type":4,
+                "value":this.activeFormList[0].value[i]?this.activeFormList[0].value[i].url:"",
+                "id":resultList?resultList[i]?resultList[i].id:"":""
+              })
+            }
+//            fieldList = _.map(this.activeFormList[0].value,(item,idx)=>{
+//              return {
+//                "styleFieldId":this.activeFormList[0].id,
+//                "type":4,
+//                "value":item.url,
+//                "id":item.formId?item.formId:""
+//              }
+//            })
+          }else{
+            fieldList = _.map(this.activeFormList,(item,idx)=>{
             console.log(this.activeFormList[idx].formId)
             return {
               "styleFieldId":this.activeFormList[idx].id,
               "type":this.activeFormList[idx].type,
               "value":this.activeFormList[idx].value,
               "id":this.activeFormList[idx].formId?this.activeFormList[idx].formId:""
-            }
-          })
+              }
+            })
+          }
+
           let params = {
             "labelId":this.step2ActiveId,
             "plannInfoId":this.$store.getters.getLandingPageId,
@@ -1643,7 +1948,11 @@
             fieldList
           }
           console.log(params)
+
+
+
           this.$api.saveSettingStep3(params).then(res =>{
+            this.saveDisabled = false
             console.log(res)
             if(res.code === 1){
 //              console.log(this.step2Right.idx)
@@ -1652,19 +1961,35 @@
               this.step2.label[index].resultList = res.data.resultList
               this.step2.label[index].styleId = this.step3ActiveStyleId
               console.log(this.step2.label[index])
+              this.copyActiveFormList = JSON.stringify(this.activeFormList)
+              if(!flag){
+                this.$message({
+                  message: '保存成功',
+                  type: 'success'
+                });
+              }
+              if(flag == "preview"){
+                this.saveStep2('preview')
+              }
+            }else{
+              this.$message({
+                message: res.message,
+                type: 'warning'
+              });
             }
           })
-
         },
         //重置样式
         resetStyle(){
+
           this.step3ActiveStyleId=""
           this.activeFormList=[]
           console.log(this.activeFormList)
         },
 
         //第三步保存editor
-        saveStep3Editor(){
+        saveStep3Editor(flag){
+          this.saveDisabled = true
           let index = this.step2Right.idx
           console.log(this.editorContent,index)
           let params = {
@@ -1674,12 +1999,29 @@
             "html":this.editorContent
           }
           this.$api.saveEditorStep3(params).then(res=>{
+            this.saveDisabled = false
             console.log(res)
             if(res.code === 1){
               let index = this.step2Right.idx
               this.step2.label[index].htmlId = res.data.id
               this.step2.label[index].html = this.editorContent
               console.log(this.step2.label[index])
+
+              this.copyEditorContent = JSON.stringify(this.editorContent)
+              if(!flag){
+                this.$message({
+                  message: '保存成功',
+                  type: 'success'
+                });
+              }
+              if(flag == "preview"){
+                this.saveStep2('preview')
+              }
+            }else{
+              this.$message({
+                message: res.message,
+                type: 'warning'
+              });
             }
           })
         },
@@ -1688,10 +2030,85 @@
         },
         //重置编辑器
         resetEditor(){
+          console.log(this.editorContent)
           this.editorContent=""
         },
+        //头图取消
+        step3BnnerCancel(){
+          console.log(JSON.stringify(this.copyBannerFileList),JSON.stringify(this.bannerFileList))
+          if(JSON.stringify(this.copyBannerFileList)!==JSON.stringify(this.bannerFileList)){
+            this.$confirm('是否保存当前编辑内容', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              this.saveStep3Banner()
+              this.step3Cancel()
+            }).catch(() => {
+              this.bannerFileList = Array.from(this.copyBannerFileList)
+              this.step3Cancel()
+            });
+          }else{
+            this.step3Cancel()
+          }
 
+        },
+        step3LabelCancel(){
+          if(this.copyActiveFormList!==JSON.stringify(this.activeFormList)){
+            this.$confirm('是否保存当前编辑内容', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              this.saveStep3Label()
+              this.step3Cancel()
+            }).catch(() => {
+              this.step3Cancel()
+            });
+          }else{
+            this.step3Cancel()
+          }
+        },
+        //编辑器取消
+        step3EditorCancel(){
+          if(this.copyEditorContent!==JSON.stringify(this.editorContent)){
+            this.$confirm('是否保存当前编辑内容', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              this.saveStep3Editor()
+              this.step3Cancel()
+            }).catch(() => {
+              console.log(JSON.parse(this.copyEditorContent))
+              this.editorContent = JSON.parse(this.copyEditorContent)
+              this.step3Cancel()
+            });
+          }else{
+            this.step3Cancel()
+          }
 
+        },
+        //插件取消
+        step3PluginCancel(){
+          console.log(this.copyPluginForm,JSON.stringify(this.pluginForm) )
+          if(this.copyPluginForm!==JSON.stringify(this.pluginForm)){
+            this.$confirm('是否保存当前编辑内容', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              this.saveStep3Plugin()
+              this.step3Cancel()
+            }).catch(() => {
+              console.log(JSON.parse(this.copyPluginForm))
+              this.pluginForm = JSON.parse(this.copyPluginForm)
+              this.step3Cancel()
+            });
+          }else{
+            this.step3Cancel()
+          }
+        },
         step3Cancel(){
           this.settingStepsActive = 1
           this.step2Show = true
@@ -1699,6 +2116,7 @@
           this.initialImg()
           this.step3ActiveStyleId="",
           this.activeFormList=[]
+
         },
 
         //plugin删除户型
@@ -1721,7 +2139,8 @@
           this.pluginForm[10].push(room)
         },
         //第三步保存plugin
-        saveStep3Plugin(){
+        saveStep3Plugin(flag){
+          this.saveDisabled = true
           console.log(this.step2.plugins[0])
           let fieldList = Object.assign({},this.pluginForm)
           if(fieldList[2].value1||fieldList[2].value2){
@@ -1762,6 +2181,7 @@
           }
           console.log(params)
           this.$api.saveSettingStep3(params).then(res =>{
+            this.saveDisabled = false
             console.log(res)
             if(res.code === 1){
 //              console.log(this.step2Right.idx)
@@ -1769,6 +2189,21 @@
               this.step2.plugins[index].htmlId = res.data.htmlId
               this.step2.plugins[index].resultList = res.data.resultList
               console.log(this.step2.plugins[index])
+              this.copyPluginForm = JSON.stringify(this.pluginForm)
+              if(!flag){
+                this.$message({
+                  message: '保存成功',
+                  type: 'success'
+                });
+              }
+              if(flag == "preview"){
+                this.saveStep2('preview')
+              }
+            }else{
+              this.$message({
+                message: res.message,
+                type: 'warning'
+              });
             }
           })
         },
@@ -1787,6 +2222,16 @@
 </script>
 
 <style lang="scss" scoped>
+  .backBtn{
+    width: 20px;
+    height: 20px;
+    margin-right: 25px;
+    background-image: url('../../assets/landingpage/settings/setting_leftarrow_icon@3x.jpg');
+    background-repeat: no-repeat;
+    background-size: 32px;
+    background-position: center;
+    cursor: pointer;
+  }
   .ghost {
     opacity: 0;
     background: #C8EBFB;
@@ -2048,6 +2493,7 @@
   }
   #step3{
     .title{
+      margin-top: 20px;
       margin-bottom: 20px;
       color: #1A173B;
       font-size: 16px;
@@ -2071,6 +2517,20 @@
     #label-setting{
       min-height: 400px;
       border-bottom: 1px solid #F2F4F8;
+      .plugin-form-top{
+        padding: 20px 0;
+        border-bottom: 1px solid #E0E6ED;
+        img{
+          float: left;
+        }
+        .name{
+          float: left;
+          line-height: 40px;
+          font-size: 14px;
+          color: #1a173b;
+          margin-left: 12px;
+        }
+      }
       .content{
         display: flex;
         .styel-list{
@@ -2109,6 +2569,14 @@
           margin-right: 30px;
           .el-form-item{
             margin-bottom: 20px;
+            .img-upload{
+              float: left;
+              .el-upload-dragger .el-upload__text{
+                position: absolute;
+                top: -20px;
+                width: 100%;
+              }
+            }
           }
         }
         .pic-list{
