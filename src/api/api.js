@@ -5,7 +5,7 @@ const base = process.env.API_ROOT
 
 export default{
   //首页数据查询
-  requstHomeData:params => {return axios.post(`http://172.16.2.208:8091/api/private/1.0/homePage/homePageCount`,params).then(res => res.data)},
+  requestHomeData:params => {return axios.post(`http://172.16.2.208:8091/api/private/1.0/homePage/homePageCount`,params).then(res => res.data)},
 
   //落地页列表
   requestPagelist: params => {return axios.post(`${base}/page/list`,params).then(res => res.data)},
@@ -14,7 +14,7 @@ export default{
   //落地页下架/上架
   pagelistUpdateStatus: id => {return axios.get(`${base}/page/update-status/${id}`).then(res => res.data)},
   //落地页模板列表
-  requstTemplateList: params => {return axios.post(`${base}/template/list`,params).then(res => res.data)},
+  requestTemplateList: params => {return axios.post(`${base}/template/list`,params).then(res => res.data)},
   //落地页所属机构查询
   requestOrgList: params => {return axios.post(`${base}/page/org/list`,params).then(res => res.data)},
   //落地页所属项目查询
@@ -34,6 +34,8 @@ export default{
   //落地页设置step3编辑器保存
   saveEditorStep3: params => {return axios.post(`${base}/page/editor/save-update`,params).then(res => res.data)},
   //落地页编辑获取信息
-  requstEditorMessage:id => {return axios.get(`${base}/page/edit/${id}`).then(res => res.data)}
+  requestEditorMessage:id => {return axios.get(`${base}/page/edit/${id}`).then(res => res.data)},
+  //落地页清除样式
+  requestClearStyle:params => {return axios.post(`${base}/page/style/clear`,params).then(res => res.data)}
 }
 
