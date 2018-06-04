@@ -69,6 +69,11 @@
         default:''
       }
     },
+    watch: {
+      detailContent(val){
+        this.tem_detailContent = val;
+      }
+    },
     components:{
       quillEditor
     },
