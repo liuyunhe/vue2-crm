@@ -7,7 +7,7 @@
             {{ item.name }}
           </el-breadcrumb-item>
         </el-breadcrumb>
-        <el-button size="small fr" @click="addTemplate">新增</el-button>
+        <el-button size="small fr" class="important" @click="addTemplate">新增</el-button>
       </el-col>
       <!--已发布/未上架-->
       <el-col :span="24" class="toolbar">
@@ -19,7 +19,7 @@
       <!--查询表单-->
       <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
         <el-form :inline="true" :model="filters">
-          <el-form-item>
+          <el-form-item :size="'small'">
             <el-autocomplete
               placeholder="搜索机构、项目、城市、落地页名称/ID"
               v-model="filters.search"
@@ -49,7 +49,7 @@
               <!--<el-option label="用户电话" value="3"></el-option>-->
             <!--</el-select>-->
           <!--</el-form-item>-->
-          <el-form-item label="投放时间">
+          <el-form-item label="投放时间" :size="'small'">
             <el-date-picker
               value-format="yyyy-MM-dd"
               v-model="filters.time"
@@ -60,11 +60,11 @@
               end-placeholder="结束日期">
             </el-date-picker>
           </el-form-item>
-          <el-form-item class="fr mr0">
+          <el-form-item class="fr mr0" :size="'small'">
             <el-button type="primary" size="small" @click="commitForm">查询</el-button>
           </el-form-item>
-          <el-form-item class="fr">
-            <el-button size="small" @click="getStatus">重置</el-button>
+          <el-form-item class="fr" :size="'small'">
+            <el-button size="small" class="important" @click="getStatus">重置</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -114,13 +114,13 @@
                 <td :title="istitle(item.updateTime)">{{item.updateTime}}</td>
                 <td :title="istitle(item.updateOperName)">{{item.updateOperName}}</td>
                 <td>
-                  <span class="ctrl">预览</span>
-                  <span class="ctrl" v-if="filters.status==='0'">检测</span>
+                  <span class="ctrl" @click="previewLandingPage(item)">预览</span>
+                  <!--<span class="ctrl" v-if="filters.status==='0'">检测</span>-->
                   <span class="ctrl" v-if="filters.status==='1'" @click="editLandingpage(item)">编辑</span>
                   <span class="ctrl" v-if="filters.status==='0'" @click="handleUpdateStatus(item)">下架</span>
                   <span class="ctrl" v-if="filters.status==='1'" @click="handleUpdateStatus(item)">发布</span>
                   <span class="ctrl">复制链接</span>
-                  <span class="ctrl" v-if="filters.status==='0'">数据</span>
+                  <!--<span class="ctrl" v-if="filters.status==='0'">数据</span>-->
                 </td>
               </tr>
             </tbody>
@@ -191,6 +191,7 @@
 </style>
 
 <script>
+    import { URL_ROOT } from "../../common/js/types"
     export default {
       name: "",
         data() {
@@ -422,14 +423,14 @@
                         },
                         on:{
                           click(){
-                            router.push({ path: '/SelectLandingPageTemplate'})
-                            document.querySelector(".el-message-box__close.el-icon-close").click()
+//                            router.push({ path: '/SelectLandingPageTemplate'})
+//                            document.querySelector(".el-message-box__close.el-icon-close").click()
                           }
                         }
                       }),
                       h('div',
                         {attrs: {class: 'text',}},
-                        'PC端落地页'
+                        '移动端端落地页'
                       )
                     ]
                   )
@@ -450,6 +451,11 @@
             }).catch(action => {
               //...
             })
+          },
+          //预览按钮
+          previewLandingPage(item){
+            console.log(item.uuid)
+            window.open(`${URL_ROOT}/api/private/1.0/page/preview/${item.uuid}`);
           },
           //编辑功能
           editLandingpage(item){
