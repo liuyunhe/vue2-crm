@@ -157,7 +157,7 @@
         },
       },
       created(){
-        this.$api.requstHomeData('').then((res)=>{
+        this.$api.requestHomeData('').then((res)=>{
           console.log(res)
           if(res.code == "1"){
             this.dataBoard = res.data

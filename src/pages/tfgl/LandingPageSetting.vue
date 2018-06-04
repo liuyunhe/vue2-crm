@@ -7,7 +7,7 @@
             {{ item.name }}
           </el-breadcrumb-item>
         </el-breadcrumb>
-        <el-button size="small fr" @click="addTemplate">新增</el-button>
+        <el-button size="small fr" class="important" @click="addTemplate">新增</el-button>
       </el-col>
       <!--已发布/未上架-->
       <el-col :span="24" class="toolbar">
@@ -19,7 +19,7 @@
       <!--查询表单-->
       <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
         <el-form :inline="true" :model="filters">
-          <el-form-item>
+          <el-form-item :size="'small'">
             <el-autocomplete
               placeholder="搜索机构、项目、城市、落地页名称/ID"
               v-model="filters.search"
@@ -49,7 +49,7 @@
               <!--<el-option label="用户电话" value="3"></el-option>-->
             <!--</el-select>-->
           <!--</el-form-item>-->
-          <el-form-item label="投放时间">
+          <el-form-item label="投放时间" :size="'small'">
             <el-date-picker
               value-format="yyyy-MM-dd"
               v-model="filters.time"
@@ -60,11 +60,11 @@
               end-placeholder="结束日期">
             </el-date-picker>
           </el-form-item>
-          <el-form-item class="fr mr0">
+          <el-form-item class="fr mr0" :size="'small'">
             <el-button type="primary" size="small" @click="commitForm">查询</el-button>
           </el-form-item>
-          <el-form-item class="fr">
-            <el-button size="small" @click="getStatus">重置</el-button>
+          <el-form-item class="fr" :size="'small'">
+            <el-button size="small" class="important" @click="getStatus">重置</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -114,13 +114,13 @@
                 <td :title="istitle(item.updateTime)">{{item.updateTime}}</td>
                 <td :title="istitle(item.updateOperName)">{{item.updateOperName}}</td>
                 <td>
-                  <span class="ctrl">预览</span>
-                  <span class="ctrl" v-if="filters.status==='0'">检测</span>
-                  <span class="ctrl" v-if="filters.status==='1'">编辑</span>
+                  <span class="ctrl" @click="previewLandingPage(item)">预览</span>
+                  <!--<span class="ctrl" v-if="filters.status==='0'">检测</span>-->
+                  <span class="ctrl" v-if="filters.status==='1'" @click="editLandingpage(item)">编辑</span>
                   <span class="ctrl" v-if="filters.status==='0'" @click="handleUpdateStatus(item)">下架</span>
                   <span class="ctrl" v-if="filters.status==='1'" @click="handleUpdateStatus(item)">发布</span>
                   <span class="ctrl">复制链接</span>
-                  <span class="ctrl" v-if="filters.status==='0'">数据</span>
+                  <!--<span class="ctrl" v-if="filters.status==='0'">数据</span>-->
                 </td>
               </tr>
             </tbody>
@@ -191,6 +191,7 @@
 </style>
 
 <script>
+    import { URL_ROOT } from "../../common/js/types"
     export default {
       name: "",
         data() {
@@ -221,236 +222,247 @@
         },
         methods:{
             //删除标签
-            deleteTag(){
-              this.pageType=''
-              this.search.pageType = this.pageType
-              this.postSearch()
-            },
-            //模糊搜索
-            querySearch(queryString, callback){
-                if(queryString){
-                  let para
-                  if(this.filters.type =="name"){
-                    para = {
-                      "orgName":this.filters.search,
-                      "cityName":this.filters.search,
-                      "projectName":this.filters.search,
-                      "gid":this.filters.search,
-                      "pageName":this.filters.search,
-                      "status":this.filters.status
+          deleteTag(){
+            this.pageType=''
+            this.search.pageType = this.pageType
+            this.postSearch()
+          },
+          //模糊搜索
+          querySearch(queryString, callback){
+              if(queryString){
+                let para
+                if(this.filters.type =="name"){
+                  para = {
+                    "orgName":this.filters.search,
+                    "cityName":this.filters.search,
+                    "projectName":this.filters.search,
+                    "gid":this.filters.search,
+                    "pageName":this.filters.search,
+                    "status":this.filters.status
+                  }
+                }else{
+                  para = {
+                    [this.filters.type]:this.filters.search,
+                    "status":this.filters.status
+                  }
+                }
+                this.$api.requestPagelistSearch(para).then((res)=>{
+                  if(res.code = 1){
+                    if(res.data == undefined){
+                      callback([])
                     }
-                  }else{
-                    para = {
-                      [this.filters.type]:this.filters.search,
-                      "status":this.filters.status
+                    else {
+                      let results =  res.data.map((item)=>{
+                        return {"value":item.split(',')[0],'tag':item.split(',')[1]}
+                      })
+                      callback(results)
                     }
                   }
-                  this.$api.requestPagelistSearch(para).then((res)=>{
-                    if(res.code = 1){
-                      if(res.data == undefined){
-                        callback([])
-                      }
-                      else {
-                        let results =  res.data.map((item)=>{
-                          return {"value":item.split(',')[0],'tag':item.split(',')[1]}
-                        })
-                        callback(results)
-                      }
-                    }
-                  })
-                }else{
-                  callback([])
-                }
-            },
-            //规范事件格式
-            configTime(){
-                if(this.filters.time === null  ){
-                  this.filters.time = []
-                }
-                console.log(this.filters.time)
-            },
-            //获取用户列表
-            getUsers() {
-                this.configTime()
-                let para = {
-                  "pageNo":this.page,
-                  "status":this.filters.status,
-                  "name":this.filters.name,
-                  "beginDate":this.filters.time[0],
-                  "endDate":this.filters.time[1],
-                  "pageType":this.pageType,
-                  [this.filters.type]:this.filters.search
-                };
-                this.search = para
-                this.postSearch()
-            },
-            //传送查询条件
-            postSearch() {
-              this.listLoading = true;
-              this.$api.requestPagelist(this.search).then((res) => {
-                if(res.code === 1){
-                  console.log(res.data.list)
-                  this.pageList = res.data.list
-                  this.total = res.data.count
-                  this.pageSize = res.data.pageSize
-                  this.listLoading = false;
-                }
-              }).catch((err)=>{
-                this.$confirm("网络报错","提示",{
-                  confirmButtonText: '确定',
-                  cancelButtonText: '取消',
-                  type: 'warning'
-                }).then(()=>{
-                  this.listLoading = false;
-                }).catch(()=>{
-                  this.listLoading = false;
                 })
-              });
-            },
-            //查询按钮
-            commitForm() {
-              this.page = 1
-              this.currentPage = 1
-              this.getUsers()
-            },
-            //radio按钮,重置
-            getStatus(){
-              this.filters.type="name"
-              this.filters.search=""
-              this.filters.time=[]
-              this.page = 1
-              this.currentPage = 1
-              this.pageType=''
-              this.getUsers()
-            },
-            //分页器功能
-            handleCurrentChange(val) {
-              this.page = val
-              this.search['pageNo'] = val
-              this.postSearch()
-              this.currentPage = val
-            },
-            //跳转按钮功能
-            jumpTo() {
-              this.$emit('current-change')
-            },
-            //超过十个字添加title属性
-            istitle(value){
-              if(value){
-                if(value.length>5){
-                  return value
-                }else{
-                  return ""
-                }
+              }else{
+                callback([])
               }
-
-            },
-            //pageType选择
-            pageTypeHandle(command){
-              this.pageType = command
-              this.getUsers()
-            },
-            //发布状态筛选:上架、下架
-            handleUpdateStatus(value) {
-              console.log(value)
-              let status = this.filters.status
-              this.$confirm(`确定${status =='1' ? '上':'下'}架该落地页?`, '提示信息', {
+          },
+          //规范事件格式
+          configTime(){
+              if(this.filters.time === null  ){
+                this.filters.time = []
+              }
+              console.log(this.filters.time)
+          },
+          //获取用户列表
+          getUsers() {
+              this.configTime()
+              let para = {
+                "pageNo":this.page,
+                "status":this.filters.status,
+                "name":this.filters.name,
+                "beginDate":this.filters.time[0],
+                "endDate":this.filters.time[1],
+                "pageType":this.pageType,
+                [this.filters.type]:this.filters.search
+              };
+              this.search = para
+              this.postSearch()
+          },
+          //传送查询条件
+          postSearch() {
+            this.listLoading = true;
+            this.$api.requestPagelist(this.search).then((res) => {
+              if(res.code === 1){
+                console.log(res.data.list)
+                this.pageList = res.data.list
+                this.total = res.data.count
+                this.pageSize = res.data.pageSize
+                this.listLoading = false;
+              }
+            }).catch((err)=>{
+              this.$confirm("网络报错","提示",{
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
-              }).then(() => {
-                console.log(value.uuid)
-//                let _this = this
-                this.$api.pagelistUpdateStatus(value.uuid).then((res)=>{
-                  console.log(res)
-                  if(res.code == 1){
-                    this.$message({
-                      type: 'success',
-                      message: `已${status == '1' ? '上':'下'}架!`
-                    });
-
-                  }
-                  this.getStatus()
-                })
-              }).catch(() => {
-                this.$message({
-                  type: 'info',
-                  message: '已取消'
-                });
-              });
-            },
-            //新增按钮
-            addTemplate() {
-              const h = this.$createElement;
-              let router = this.$router;
-              this.$msgbox({
-                title: '新增落地页',
-                message: h(
-                  'div',
-                  {attrs: {class: 'template-select-dialog',}},
-                  [
-                    h('div',
-                      {attrs: {class: 'pcTemplate_select',}},
-                      [h('img',
-                        {
-                          attrs:{
-                            src:require('../../assets/landingpage/pcTemplate_select.png'),
-                            class:'pcTemplate',
-                            width:'111'
-                          },
-                          on:{
-                            click(){
-                              router.push({ path: '/SelectLandingPageTemplate'})
-                              document.querySelector(".el-message-box__close.el-icon-close").click()
-                            }
-                          }
-                        }),
-                        h('div',
-                          {attrs: {class: 'text',}},
-                          'PC端落地页'
-                        )
-                      ]
-                    ),
-                    h('div',
-                      {attrs: {class: 'mobileTemplate_select',}},
-                      [h('img',
-                        {
-                          attrs:{
-                            src:require('../../assets/landingpage/mobileTemplate_select.png'),
-                            class:'mobileTemplate',
-                            width:'72'
-                          },
-                          on:{
-                            click(){
-                              router.push({ path: '/SelectLandingPageTemplate'})
-                              document.querySelector(".el-message-box__close.el-icon-close").click()
-                            }
-                          }
-                        }),
-                        h('div',
-                          {attrs: {class: 'text',}},
-                          'PC端落地页'
-                        )
-                      ]
-                    )
-                  ]),
-                showCancelButton: true,
-                showConfirmButton:false,
-                //confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                beforeClose: (action, instance, done) => {
-                  if (action === 'confirm') {
-                    done();
-                  } else {
-                    done();
-                  }
-                }
-              }).then(action => {
-                //...
-              }).catch(action => {
-                //...
+              }).then(()=>{
+                this.listLoading = false;
+              }).catch(()=>{
+                this.listLoading = false;
               })
-            },
+            });
+          },
+          //查询按钮
+          commitForm() {
+            this.page = 1
+            this.currentPage = 1
+            this.getUsers()
+          },
+          //radio按钮,重置
+          getStatus(){
+            this.filters.type="name"
+            this.filters.search=""
+            this.filters.time=[]
+            this.page = 1
+            this.currentPage = 1
+            this.pageType=''
+            this.getUsers()
+          },
+          //分页器功能
+          handleCurrentChange(val) {
+            this.page = val
+            this.search['pageNo'] = val
+            this.postSearch()
+            this.currentPage = val
+          },
+          //跳转按钮功能
+          jumpTo() {
+            this.$emit('current-change')
+          },
+          //超过十个字添加title属性
+          istitle(value){
+            if(value){
+              if(value.length>5){
+                return value
+              }else{
+                return ""
+              }
+            }
+
+          },
+          //pageType选择
+          pageTypeHandle(command){
+            this.pageType = command
+            this.getUsers()
+          },
+          //发布状态筛选:上架、下架
+          handleUpdateStatus(value) {
+            console.log(value)
+            let status = this.filters.status
+            this.$confirm(`确定${status =='1' ? '上':'下'}架该落地页?`, '提示信息', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              console.log(value.uuid)
+//                let _this = this
+              this.$api.pagelistUpdateStatus(value.uuid).then((res)=>{
+                console.log(res)
+                if(res.code == 1){
+                  this.$message({
+                    type: 'success',
+                    message: `已${status == '1' ? '上':'下'}架!`
+                  });
+
+                }
+                this.getStatus()
+              })
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已取消'
+              });
+            });
+          },
+          //新增按钮
+          addTemplate() {
+            const h = this.$createElement;
+            let router = this.$router;
+            this.$msgbox({
+              title: '新增落地页',
+              message: h(
+                'div',
+                {attrs: {class: 'template-select-dialog',}},
+                [
+                  h('div',
+                    {attrs: {class: 'pcTemplate_select',}},
+                    [h('img',
+                      {
+                        attrs:{
+                          src:require('../../assets/landingpage/pcTemplate_select.png'),
+                          class:'pcTemplate',
+                          width:'111'
+                        },
+                        on:{
+                          click(){
+                            router.push({ path: '/SelectLandingPageTemplate'})
+                            document.querySelector(".el-message-box__close.el-icon-close").click()
+                          }
+                        }
+                      }),
+                      h('div',
+                        {attrs: {class: 'text',}},
+                        'PC端落地页'
+                      )
+                    ]
+                  ),
+                  h('div',
+                    {attrs: {class: 'mobileTemplate_select',}},
+                    [h('img',
+                      {
+                        attrs:{
+                          src:require('../../assets/landingpage/mobileTemplate_select.png'),
+                          class:'mobileTemplate',
+                          width:'72'
+                        },
+                        on:{
+                          click(){
+//                            router.push({ path: '/SelectLandingPageTemplate'})
+//                            document.querySelector(".el-message-box__close.el-icon-close").click()
+                          }
+                        }
+                      }),
+                      h('div',
+                        {attrs: {class: 'text',}},
+                        '移动端端落地页'
+                      )
+                    ]
+                  )
+                ]),
+              showCancelButton: true,
+              showConfirmButton:false,
+              //confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              beforeClose: (action, instance, done) => {
+                if (action === 'confirm') {
+                  done();
+                } else {
+                  done();
+                }
+              }
+            }).then(action => {
+              //...
+            }).catch(action => {
+              //...
+            })
+          },
+          //预览按钮
+          previewLandingPage(item){
+            console.log(item.uuid)
+            window.open(`${URL_ROOT}/api/private/1.0/page/preview/${item.uuid}`);
+          },
+          //编辑功能
+          editLandingpage(item){
+            console.log(item)
+            this.$store.commit('setLandingPageId',item.uuid)
+            this.$router.push({ path: '/MessageSetting'})
+          }
         },
         mounted() {
           this.getUsers()
