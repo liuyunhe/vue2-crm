@@ -152,7 +152,6 @@
       onEditorReady(e){
         console.log('editor ready!', e)
       },
-
     }
   }
 </script>
@@ -176,5 +175,4 @@
       }
     }
   }
-
 </style>

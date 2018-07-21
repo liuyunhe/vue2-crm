@@ -281,8 +281,9 @@
                     v-for="(item,index) in styleList"
                     v-if="item.type === 1"
                     @click="selectStyle(item,index)"
+                    :style="{backgroundImage:`url(${URL_ROOT}${item.url})`}"
                   ></div>
-                  <!--:style="{backgroundImage:`url(${URL_ROOT}${item.url})`}"-->
+
                 </div>
               </div>
               <div class="style-list-ltem">
@@ -294,6 +295,7 @@
                     v-for="(item,index) in styleList"
                     v-if="item.type === 2"
                     @click="selectStyle(item,index)"
+                    :style="{backgroundImage:`url(${URL_ROOT}${item.url})`}"
                   ></div>
                 </div>
               </div>
@@ -306,6 +308,7 @@
                     v-for="(item,index) in styleList"
                     v-if="item.type === 3"
                     @click="selectStyle(item,index)"
+                    :style="{backgroundImage:`url(${URL_ROOT}${item.url})`}"
                   ></div>
                 </div>
               </div>
@@ -541,8 +544,8 @@
             <!--展示图片-->
             <div class="pic-list right" >
               <div class="title">当前样式</div>
-              <div class="style-img">
-                <img src="../../assets/example.png" width="388" alt="">
+              <div class="style-img" v-show="step3ActiveStyleImg">
+                <img :src="`${URL_ROOT}${step3ActiveStyleImg}`" width="388" alt="">
               </div>
             </div>
           </div>
@@ -774,6 +777,7 @@
           step2Active:"",
           //当前选中标签ID
           step2ActiveId:"",
+
           step2Right:{},
 //          step2params:[],
           //按钮
@@ -795,6 +799,7 @@
             desc:""
 
           },
+          step3ActiveStyleImg:"",
           //弹窗图片
           dialogImageUrl: '',
           dialogVisible: false,
@@ -882,7 +887,15 @@
       watch:{
         pluginForm(val){
           this.pluginForm = val
-        }
+        },
+//        step3ActiveStyleId(val){
+//          if(val!==""){
+//            let arr = this.styleList.filter(obj=>{
+//              return obj.id == val
+//            })
+//            this.step3ActiveStyleImg = arr.url
+//          }
+//        }
       },
       methods:{
         changeTemplate(){
@@ -1063,6 +1076,7 @@
           this.$api.requestStyleList('').then(res =>{
             if(res.code === 1){
               this.styleList = res.data
+              console.log('zzzzzz',this.styleList)
             }
           }).catch(err =>{
 
@@ -1232,6 +1246,12 @@
           if(resultList){
             this.step3.status = 0
             this.step3ActiveStyleId = resultList[0].styleId
+            let arr = this.styleList.filter(obj=>{
+              return obj.id == this.step3ActiveStyleId
+            })
+
+            this.step3ActiveStyleImg = arr[0].url
+            console.log(this.step3ActiveStyleImg)
 
             this.$api.requestStyleId(this.step3ActiveStyleId).then(res =>{
               if(res.code === 1){
@@ -1531,12 +1551,15 @@
                   console.log("this.step2.label[this.step2Right.idx]",this.step2.label[this.step2Right.idx])
                   this.activeFormList=[]
                   this.step3ActiveStyleId = item.id
+                  this.step3ActiveStyleImg = item.url,
                   this.initialImg()
                   this.getStyleId(item.id)
                 })
 
               }else{
                 this.step3ActiveStyleId = item.id
+                this.step3ActiveStyleImg = item.url
+                console.log(this.step3ActiveStyleImg)
                 this.initialImg()
                 this.getStyleId(item.id)
               }
@@ -1548,6 +1571,9 @@
           }else{
             console.log(item)
             this.step3ActiveStyleId = item.id
+            this.step3ActiveStyleImg = item.url
+            console.log(this.step3ActiveStyleImg)
+            console.log("1111")
             this.initialImg()
             this.getStyleId(item.id)
           }
@@ -1562,6 +1588,7 @@
               console.log(this.activeFormList)
             }
           })
+
         },
         //label编辑切换模式
         step3GetStatus(value){
@@ -2062,6 +2089,7 @@
             }).then(() => {
               this.saveStep3Label()
               this.step3Cancel()
+
             }).catch(() => {
               this.step3Cancel()
             });
@@ -2114,7 +2142,8 @@
           this.step2Show = true
           this.step3Show = false
           this.initialImg()
-          this.step3ActiveStyleId="",
+          this.step3ActiveStyleId=""
+          this.step3ActiveStyleImg=""
           this.activeFormList=[]
 
         },
